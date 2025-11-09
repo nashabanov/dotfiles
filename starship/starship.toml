@@ -1,0 +1,56 @@
+format = "$username$directory$git_branch$git_status $golang$python$lua\n$character"
+
+[username]
+show_always = true
+style_user = "bold blue"
+format = "[$user]($style) "
+
+[directory]
+truncation_length = 5
+truncation_symbol = "…/"
+style = "bold cyan"
+format = "[$path]($style) "
+
+[git_branch]
+symbol = " "
+style = "bold green"
+format = "[$symbol$branch]($style)"
+
+[git_status]
+style = "bold yellow"
+format = "([$all_status]($style))"
+
+[golang]
+symbol = " "
+style = "bold cyan"
+format = "[$symbol$version]($style) "
+
+[python]
+symbol = " "
+style = "bold yellow"
+format = "[$symbol$version]($style) "
+
+[lua]
+symbol = " "
+style = "bold blue"
+format = "[$symbol$version]($style) "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+format = "$symbol "
+
+[custom.newline]
+command = "echo ''"
+when = "true"
+format = "\n"
+
+# Отключаем лишнее
+[package]
+disabled = true
+[rust]
+disabled = true
+[nodejs]
+disabled = true
+[terraform]
+disabled = true
