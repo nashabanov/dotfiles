@@ -1,0 +1,19 @@
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Logs
+*.log
+
+# Editor configs
+.vscode/settings.json
+
+# Backup files
+*.bak
+*.backup
