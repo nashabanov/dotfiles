@@ -8,7 +8,7 @@ Personal configuration files for my development tools.
 - **Starship** - cross-shell prompt
 - **Neovim** - text editor
 
-## Структура
+## Structure
 ```
 dotfiles/
 ├── wezterm/
