@@ -1,4 +1,19 @@
-format = "$username$directory$git_branch$git_status $golang$python$lua\n$character"
+scan_timeout = 30
+command_timeout = 500
+add_newline = true
+
+format = """
+$time\
+$username\
+$directory\
+$git_branch\
+$git_status\
+$git_metrics\
+$golang\
+$python\
+$lua\
+$cmd_duration
+$character"""
 
 [username]
 show_always = true
@@ -14,11 +29,21 @@ format = "[$path]($style) "
 [git_branch]
 symbol = " "
 style = "bold green"
-format = "[$symbol$branch]($style)"
+format = "[$symbol$branch]($style) "
 
 [git_status]
 style = "bold yellow"
-format = "([$all_status]($style))"
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+conflicted = "🏳"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕"
+untracked = "?${count}"
+stashed = "📦${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
 
 [golang]
 symbol = " "
@@ -33,7 +58,7 @@ format = "[$symbol$version]($style) "
 [lua]
 symbol = " "
 style = "bold blue"
-format = "[$symbol$version]($style) "
+format = '[$symbol$version(\($virtualenv\))]($style) '
 
 [character]
 success_symbol = "[❯](bold green)"
@@ -45,11 +70,29 @@ command = "echo ''"
 when = "true"
 format = "\n"
 
+[cmd_duration]
+min_time = 500  
+style = "bold yellow"
+format = "took [$duration]($style) "
+show_milliseconds = true
+show_notifications = false
+
+[git_metrics]
+added_style = "bold green"
+deleted_style = "bold red"
+format = "([+$added]($added_style) )([-$deleted]($deleted_style) )"
+disabled = false
+
+
+
 [package]
 disabled = true
+
 [rust]
 disabled = true
+
 [nodejs]
 disabled = true
+
 [terraform]
 disabled = true
