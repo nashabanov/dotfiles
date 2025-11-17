@@ -21,7 +21,6 @@ tabline.setup({
         tabline_y = {},
         tabline_z = {},
 
-        -- Активный таб: крупный индекс + имя процесса
         tab_active = {
             {
                 'index',
@@ -66,6 +65,13 @@ config.font = wezterm.font_with_fallback({
 })
 config.font_size = 14
 
+config.front_end = 'OpenGL'
+config.freetype_load_target = 'Light'
+config.freetype_render_target = 'HorizontalLcd'
+config.underline_thickness = '2px'
+config.freetype_load_flags = 'NO_HINTING'
+config.custom_block_glyphs = false
+
 -- Terminal type
 config.default_prog = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe', '-Nologo' }
 
@@ -84,14 +90,16 @@ config.window_padding = {
     bottom = 0,
 }
 
-
 config.window_decorations = 'TITLE | RESIZE'
 config.initial_rows = 50
 config.initial_cols = 120
 
+config.window_background_opacity = 0.95
+config.text_background_opacity = 1
+
 -- Cursor
 config.default_cursor_style = 'BlinkingBar'
-config.cursor_blink_rate = 500
+config.cursor_blink_rate = 600
 config.cursor_blink_ease_in = 'EaseIn'
 config.cursor_blink_ease_out = 'EaseOut'
 config.cursor_thickness = 0.3

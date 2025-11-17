@@ -45,7 +45,6 @@ command = "echo ''"
 when = "true"
 format = "\n"
 
-# Отключаем лишнее
 [package]
 disabled = true
 [rust]
