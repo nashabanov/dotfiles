@@ -11,6 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
 require("lazy").setup({
     {
         "nvim-neo-tree/neo-tree.nvim",
@@ -172,4 +173,14 @@ require("lazy").setup({
             },
         },
     },
+    {
+        "numToStr/Comment.nvim",
+        keys = {
+            { "gcc", mode = "n",          desc = "Comment toggle current line" },
+            { "gc",  mode = { "n", "o" }, desc = "Comment toggle linewise" },
+            { "gc",  mode = "x",          desc = "Comment toggle linewise (visual)" },
+        },
+        opts = {},
+    },
+
 })
