@@ -3,11 +3,13 @@ $dotfilesdir = "$PSScriptRoot"
 $weztermSource = "$dotfilesdir\wezterm\.wezterm.lua"
 $starshipSource = "$dotfilesdir\starship\starship.toml"
 $nvimSource = "$dotfilesdir\nvim"
+$gituiSource = "$dotfilesdir\gitui\key_bindings.ron"
 
 # Paths for symlinks
 $weztermTarget = "$HOME\.wezterm.lua"
 $starshipTarget = "$HOME\.config\starship.toml"
 $nvimTarget = "$env:LOCALAPPDATA\nvim"
+$gituiTarget = "$env:APPDATA\gitui\key_bindings.ron"
 
 Write-Host "=== Dotfiles Installation ===" -ForegroundColor Cyan
 Write-Host "Repository: $dotfilesdir" -ForegroundColor Gray
@@ -72,6 +74,7 @@ Write-Host "Creating symlinks..." -ForegroundColor Cyan
 New-Symlink -Source $weztermSource -Target $weztermTarget
 New-Symlink -Source $starshipSource -Target $starshipTarget
 New-Symlink -Source $nvimSource -Target $nvimTarget
+New-Symlink -Source $gituiSource -Target $gituiTarget
 
 # Print summary
 Write-Host ""

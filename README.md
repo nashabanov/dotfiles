@@ -7,6 +7,7 @@ Personal configuration files for my development tools.
 - **WezTerm** - terminal emulator
 - **Starship** - cross-shell prompt
 - **Neovim** - text editor
+- **gitui** - tui git client 
 
 ## Structure
 ```
@@ -19,6 +20,8 @@ dotfiles/
 │ ├── init.lua
 │ ├── lua/
 │ └── after/
+├── gitui/
+│ └── key_bindings.ron
 ├── install.ps1 # symlinks installation script
 ├── check.ps1 # symlinks check script
 └── uninstall.ps1 # symlinks deletion script

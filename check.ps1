@@ -14,6 +14,11 @@ $symlinks = @(
         Name = "Neovim"
         Path = "$env:LOCALAPPDATA\nvim"
         ExpectedTarget = "$PSScriptRoot\nvim"
+    },
+    @{
+        Name = "gitui"
+        Path = "$env:APPDATA\gitui\key_bindings.ron"
+        ExpectedTarget = "$PSScriptRoot\gitui\key_bindings.ron"
     }
 )
 

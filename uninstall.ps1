@@ -11,6 +11,10 @@ $symlinks = @(
     @{
         Name = "Neovim"
         Path = "$env:LOCALAPPDATA\nvim"
+    },
+    @{
+        Name = "gitui"
+        Path = "$env:APPDATA\gitui\key_bindings.ron"
     }
 )
 
