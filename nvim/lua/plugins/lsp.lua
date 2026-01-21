@@ -4,7 +4,7 @@ local mason_lspconfig = require("mason-lspconfig")
 
 mason.setup()
 mason_lspconfig.setup({
-    ensure_installed = { "pyright", "gopls", "lua_ls" },
+    ensure_installed = { "pyright", "ruff", "gopls", "lua_ls" },
     automatic_installation = true,
 })
 
@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>D", vim.diagnostic.open_float, opts)
 
-        vim.notify("LSP attached: " .. client.name .. " for " .. vim.bo[ev.buf].filetype, vim.log.levels.INFO)
+        -- vim.notify("LSP attached: " .. client.name .. " for " .. vim.bo[ev.buf].filetype, vim.log.levels.INFO)
     end,
 })
 
@@ -38,9 +38,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("BufWritePre", {
     group = vim.api.nvim_create_augroup("LspFormat", {}),
     callback = function(ev)
-        local clients = vim.lsp.get_clients({ bufnr = ev.buf })
+        local clients = vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/formatting" })
         if #clients > 0 then
-            vim.lsp.buf.format({ async = false })
+            vim.lsp.buf.format({
+                bufnr = ev.buf,
+                async = false,
+                timeout_ms = 2000
+            })
         end
     end,
 })
