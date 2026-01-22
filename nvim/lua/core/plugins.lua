@@ -84,56 +84,6 @@ require("lazy").setup({
             require("plugins.bufferline")
         end
     },
-    -- {
-    --     "projekt0n/github-nvim-theme",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         require("github-theme").setup({
-    --             options = {
-    --                 styles = {
-    --                     comments = "italic", -- Строка, не таблица
-    --                     keywords = "italic",
-    --                     functions = "bold",
-    --                     variables = "NONE",
-    --                 },
-    --                 transparent = false,
-    --                 terminal_colors = true,
-    --                 message_style = "dark",
-    --                 hide_inactive_statusline = false,
-    --             },
-    --         })
-    --         vim.cmd([[colorscheme github_dark_default]])
-    --     end,
-    -- },
-    -- {
-    --     "catppuccin/nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     name = "catppuccin",
-    --     opts = {
-    --         flavour = "mocha",
-    --         transparent_background = true, -- или true, если фон WezTerm кастомный
-    --         term_colors = true,
-    --         styles = {
-    --             comments = { "italic" },
-    --             keywords = { "italic" },
-    --             functions = { "bold" },
-    --         },
-    --         integrations = {
-    --             cmp = true,
-    --             gitsigns = true,
-    --             notify = true,
-    --             noice = true,
-    --             lualine = true,
-    --             telescope = true,
-    --         },
-    --     },
-    --     config = function(_, opts)
-    --         require("catppuccin").setup(opts)
-    --         vim.cmd("colorscheme catppuccin")
-    --     end,
-    -- },
     {
         "folke/tokyonight.nvim",
         lazy = false,
@@ -243,6 +193,10 @@ require("lazy").setup({
         end,
     },
     {
+        "MunifTanjim/nui.nvim",
+        lazy = true,
+    },
+    {
         "folke/noice.nvim",
         event = "VeryLazy",
         dependencies = {
@@ -250,9 +204,16 @@ require("lazy").setup({
             "rcarriga/nvim-notify",
         },
         opts = {
+            lsp = {
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
             presets = {
                 bottom_search = true,
-                command_pallete = true,
+                command_palette = true,
                 long_message_to_split = true,
             },
         },

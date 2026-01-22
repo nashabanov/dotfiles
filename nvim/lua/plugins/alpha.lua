@@ -1,7 +1,6 @@
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.dashboard")
 
--- Крупный, милый, мемный кот (ASCII)
 local ascii_art = {
     "  ┌───────────────────────┐",
     "  │        /\\_/\\          │",
@@ -12,37 +11,41 @@ local ascii_art = {
     "  │                       │",
     "  └───────────────────────┘",
 }
--- Кнопки — используем иконки Nerd Fonts (можно заменить на символы, если не установлены)
 dashboard.section.buttons.val = {
     dashboard.button("f", "  Find file", "<cmd>Telescope find_files<cr>"),
     dashboard.button("e", "  New file", "<cmd>ene <bar> startinsert<cr>"),
+
     dashboard.button("r", "  Recents", "<cmd>Telescope oldfiles<cr>"),
     dashboard.button("g", "  Grep", "<cmd>Telescope live_grep<cr>"),
     dashboard.button("l", "  Lazy", "<cmd>Lazy<cr>"),
     dashboard.button("q", "  Quit NVIM", "<cmd>qa<cr>"),
 }
 
--- Стилизация: делаем акценты только на горячих клавишах
 for _, button in ipairs(dashboard.section.buttons.val) do
-    button.opts.hl = "Comment"          -- серый/второстепенный текст
-    button.opts.hl_shortcut = "Special" -- акцентный цвет (розовый в TokyoNight, розовый/фиолетовый в Catppuccin)
+    button.opts.hl = button.opts.hl or "Comment"
+    button.opts.hl_shortcut = "Special"
 end
 
--- Заголовок (котик) — оставляем серым, чтобы не перегружать
 dashboard.section.header.val = ascii_art
-dashboard.section.header.opts.hl = "Comment"
+dashboard.section.header.opts.hl = "NonText"
 
--- Убираем footer
-dashboard.section.footer.val = {}
-dashboard.section.footer.opts.hl = "Comment"
+dashboard.section.footer.val = {
+    string.format(
+        "  Neovim %s.%s  |  ⚡️ %d plugins",
+        vim.version().major,
+        vim.version().minor,
+        require("lazy").stats().count
+    )
+}
+dashboard.section.footer.opts.hl = "NonText"
 
--- Макет: немного отступов, всё по центру
 dashboard.opts.layout = {
-    { type = "padding", val = 3 },
+    { type = "padding", val = 4 },
     dashboard.section.header,
-    { type = "padding", val = 2 },
+    { type = "padding", val = 3 },
     dashboard.section.buttons,
     { type = "padding", val = 2 },
+    dashboard.section.footer,
 }
 
 alpha.setup(dashboard.opts)
