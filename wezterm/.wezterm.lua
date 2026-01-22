@@ -6,7 +6,7 @@ local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabl
 tabline.setup({
     options = {
         icons_enabled = true,
-        theme = 'GitHub Dark',
+        theme = 'Tokyo Night Storm',
         tabs_enabled = true,
 
         section_separators = '',
@@ -55,7 +55,7 @@ local config = wezterm.config_builder()
 tabline.apply_to_config(config)
 
 -- Theme
-config.color_scheme = 'GitHub Dark'
+config.color_scheme = 'Tokyo Night Storm'
 
 -- Font
 config.font = wezterm.font_with_fallback({

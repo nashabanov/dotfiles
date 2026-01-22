@@ -1,10 +1,6 @@
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.dashboard")
 
--- Цвета GitHub Dark (из твоего скриншота)
-local github_dark_blue = "#58A6FF" -- Акцентный цвет для hotkeys
-local github_dark_grey = "#8B949E" -- Серый для текста
-
 -- Крупный, милый, мемный кот (ASCII)
 local ascii_art = {
     "  ┌───────────────────────┐",
@@ -28,13 +24,9 @@ dashboard.section.buttons.val = {
 
 -- Стилизация: делаем акценты только на горячих клавишах
 for _, button in ipairs(dashboard.section.buttons.val) do
-    button.opts.hl = "Comment"                -- Текст кнопки — серый (#8B949E)
-    button.opts.hl_shortcut = "AlphaShortcut" -- Горячая клавиша — #58A6FF
+    button.opts.hl = "Comment"          -- серый/второстепенный текст
+    button.opts.hl_shortcut = "Special" -- акцентный цвет (розовый в TokyoNight, розовый/фиолетовый в Catppuccin)
 end
-
--- Переопределяем highlight группы под твой стиль
-vim.api.nvim_set_hl(0, "AlphaButtons", { fg = github_dark_grey, bg = "NONE" })
-vim.api.nvim_set_hl(0, "AlphaShortcut", { fg = github_dark_blue, bold = true }) -- 🔵 Яркий акцент!
 
 -- Заголовок (котик) — оставляем серым, чтобы не перегружать
 dashboard.section.header.val = ascii_art

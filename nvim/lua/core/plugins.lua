@@ -84,26 +84,74 @@ require("lazy").setup({
             require("plugins.bufferline")
         end
     },
+    -- {
+    --     "projekt0n/github-nvim-theme",
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         require("github-theme").setup({
+    --             options = {
+    --                 styles = {
+    --                     comments = "italic", -- Строка, не таблица
+    --                     keywords = "italic",
+    --                     functions = "bold",
+    --                     variables = "NONE",
+    --                 },
+    --                 transparent = false,
+    --                 terminal_colors = true,
+    --                 message_style = "dark",
+    --                 hide_inactive_statusline = false,
+    --             },
+    --         })
+    --         vim.cmd([[colorscheme github_dark_default]])
+    --     end,
+    -- },
+    -- {
+    --     "catppuccin/nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     name = "catppuccin",
+    --     opts = {
+    --         flavour = "mocha",
+    --         transparent_background = true, -- или true, если фон WezTerm кастомный
+    --         term_colors = true,
+    --         styles = {
+    --             comments = { "italic" },
+    --             keywords = { "italic" },
+    --             functions = { "bold" },
+    --         },
+    --         integrations = {
+    --             cmp = true,
+    --             gitsigns = true,
+    --             notify = true,
+    --             noice = true,
+    --             lualine = true,
+    --             telescope = true,
+    --         },
+    --     },
+    --     config = function(_, opts)
+    --         require("catppuccin").setup(opts)
+    --         vim.cmd("colorscheme catppuccin")
+    --     end,
+    -- },
     {
-        "projekt0n/github-nvim-theme",
+        "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        config = function()
-            require("github-theme").setup({
-                options = {
-                    styles = {
-                        comments = "italic", -- Строка, не таблица
-                        keywords = "italic",
-                        functions = "bold",
-                        variables = "NONE",
-                    },
-                    transparent = false,
-                    terminal_colors = true,
-                    message_style = "dark",
-                    hide_inactive_statusline = false,
-                },
-            })
-            vim.cmd([[colorscheme github_dark_default]])
+        opts = {
+            style = "storm",
+            transparent = true,
+            terminal_colors = true,
+            styles = {
+                comments = { italic = true },
+                keywords = { italic = true },
+                functions = { bold = true },
+                variables = {},
+            },
+        },
+        config = function(_, opts)
+            require("tokyonight").setup(opts)
+            vim.cmd("colorscheme tokyonight")
         end,
     },
     {
@@ -182,5 +230,37 @@ require("lazy").setup({
         },
         opts = {},
     },
+    {
+        "rcarriga/nvim-notify",
+        opts = {
+            stages = "fade",
+            timeout = 2000,
+            render = "compact",
+            background_colour = "#000000",
+        },
+        init = function()
+            vim.notify = require("notify")
+        end,
+    },
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
+        opts = {
+            presets = {
+                bottom_search = true,
+                command_pallete = true,
+                long_message_to_split = true,
+            },
+        },
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufReadPost",
+        main = "ibl",
+    }
 
 })
