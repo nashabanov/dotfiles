@@ -32,7 +32,6 @@ require("lazy").setup({
             require("plugins.treesitter")
         end,
     },
-    -- Mason + LSP
     {
         "williamboman/mason.nvim",
         config = function()
@@ -222,6 +221,25 @@ require("lazy").setup({
         "lukas-reineke/indent-blankline.nvim",
         event = "BufReadPost",
         main = "ibl",
-    }
+    },
+    {
+        "lewis6991/gitsigns.nvim",
+        event = "BufReadPre",
+        opts = {},
+    },
+    {
+        "karb94/neoscroll.nvim",
+        opts = {
+            hide_cursor = false,
+        },
+    },
+    {
+        'nvim-mini/mini.cursorword',
+        version = false,
+        event = "CursorHold",
+        config = function()
+            require("mini.cursorword").setup()
+        end,
+    },
 
 })
