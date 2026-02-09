@@ -29,9 +29,10 @@ map("gd", function()
     builtin.lsp_definitions({ reuse_win = true })
 end, "Go to Definition")
 
-map("gi", function()
-    builtin.lsp_implementations({ reuse_win = true })
-end, "Go to Implementation")
+map("gi", vim.lsp.buf.incoming_calls, "Incoming Calls")
+map("go", vim.lsp.buf.outgoing_calls, "Outgoing Calls")
+
+map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 map("gy", function()
     builtin.lsp_type_definitions({ reuse_win = true })
