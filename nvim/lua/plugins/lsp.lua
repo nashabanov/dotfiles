@@ -4,12 +4,12 @@ local mason_lspconfig = require("mason-lspconfig")
 
 mason.setup()
 mason_lspconfig.setup({
-    ensure_installed = { "pyright", "ruff", "gopls", "lua_ls" },
+    ensure_installed = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" },
     automatic_installation = true,
 })
 
 -- Список серверов для включения
-local servers = { "pyright", "gopls", "lua_ls" }
+local servers = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" }
 
 -- Включаем каждый сервер
 for _, server in ipairs(servers) do

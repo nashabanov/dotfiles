@@ -63,7 +63,7 @@ config.font = wezterm.font_with_fallback({
     "Segoe UI Emoji",
     "Cascadia Code"
 })
-config.font_size = 12
+config.font_size = 14.5
 
 config.front_end = 'OpenGL'
 config.freetype_load_target = 'Light'
@@ -72,8 +72,6 @@ config.underline_thickness = '2px'
 config.freetype_load_flags = 'NO_HINTING'
 config.custom_block_glyphs = false
 
--- Terminal type
-config.default_prog = { 'C:\\Program Files\\PowerShell\\7\\pwsh.exe', '-Nologo' }
 
 -- Tab bar basic
 config.enable_tab_bar = true
@@ -90,7 +88,7 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.window_decorations = 'TITLE | RESIZE'
+config.window_decorations = 'RESIZE'
 config.initial_rows = 50
 config.initial_cols = 120
 

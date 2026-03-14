@@ -28,9 +28,38 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        lazy = false,
+        priority = 1000,
         config = function()
-            require("plugins.treesitter")
+            -- Устанавливаем парсеры (без вызова setup!)
+            require("nvim-treesitter.install").prefer_git = true
+            -- Явно включаем подсветку для всех буферов
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                callback = function()
+                    local bufnr = vim.api.nvim_get_current_buf()
+                    local lang = vim.bo[bufnr].filetype
+                    if lang ~= "" then
+                        pcall(vim.treesitter.start, bufnr, lang)
+                    end
+                end,
+            })
         end,
+    },
+    {
+        "MeanderingProgrammer/treesitter-modules.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        opts = {
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = "<Enter>",
+                    node_incremental = "<Enter>",
+                    scope_incremental = "<Tab>",
+                    node_decremental = "<BS>",
+                },
+            },
+        },
     },
     {
         "williamboman/mason.nvim",
@@ -86,7 +115,7 @@ require("lazy").setup({
     {
         "folke/tokyonight.nvim",
         lazy = false,
-        priority = 1000,
+        priority = 999,
         opts = {
             style = "storm",
             transparent = true,
