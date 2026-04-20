@@ -1,7 +1,5 @@
-#!/usr/bin/env bash
 set -euo pipefail
 
-# Цвета
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -14,11 +12,13 @@ WEZTERM_SOURCE="$DOTFILES_DIR/wezterm/.wezterm.lua"
 STARSHIP_SOURCE="$DOTFILES_DIR/starship/starship.toml"
 NVIM_SOURCE="$DOTFILES_DIR/nvim"
 GITUI_SOURCE="$DOTFILES_DIR/gitui/key_bindings.ron"
+ZSH_SOURCE="$DOTFILES_DIR/zsh/.zshrc"
 
 WEZTERM_TARGET="$HOME/.wezterm.lua"
 STARSHIP_TARGET="$HOME/.config/starship.toml"
 NVIM_TARGET="$HOME/.config/nvim"
 GITUI_TARGET="$HOME/.config/gitui/key_bindings.ron"
+ZSH_TARGET="$HOME/.zshrc"
 
 success_count=0
 fail_count=0
@@ -94,12 +94,15 @@ create_symlink "$WEZTERM_SOURCE" "$WEZTERM_TARGET" "WezTerm"
 create_symlink "$STARSHIP_SOURCE" "$STARSHIP_TARGET" "Starship"
 create_symlink "$NVIM_SOURCE" "$NVIM_TARGET" "Neovim"
 create_symlink "$GITUI_SOURCE" "$GITUI_TARGET" "gitui"
+create_symlink "$ZSH_SOURCE" "$ZSH_TARGET" "zsh"
 
 echo ""
 print_header="=== Summary ==="
 echo -e "${CYAN}${print_header}${NC}"
 
-if [[ $success_count -eq 4 && $fail_count -eq 0 ]]; then
+TOTAL=$((success_count + fail_count))
+
+if [[ $success_count -eq $TOTAL && $fail_count -eq 0 ]]; then
     print_success "✓ Installation complete! All symlinks created successfully."
     exit 0
 elif [[ $success_count -gt 0 ]]; then

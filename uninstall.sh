@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
 set -euo pipefail
 
-# Цвета
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -13,7 +13,8 @@ declare -a SYMLINKS=(
     "$HOME/.wezterm.lua:WezTerm"
     "$HOME/.config/starship.toml:Starship"
     "$HOME/.config/nvim:Neovim"
-    "$HOME/.config/gitui/key_bindings.ron:gitui"
+    "$HOME/.config/gitui/key_bindings.ron:gitui"    
+    "$HOME/.zshrc:zsh"
 )
 
 print_header() {
