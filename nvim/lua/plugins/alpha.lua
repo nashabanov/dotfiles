@@ -12,11 +12,11 @@ local ascii_art = {
     "  └───────────────────────┘",
 }
 dashboard.section.buttons.val = {
-    dashboard.button("f", "  Find file", "<cmd>Telescope find_files<cr>"),
+    dashboard.button("f", "  Find file", "<cmd>lua require('fff').find_files()<cr>"),
     dashboard.button("e", "  New file", "<cmd>ene <bar> startinsert<cr>"),
 
     dashboard.button("r", "  Recents", "<cmd>Telescope oldfiles<cr>"),
-    dashboard.button("g", "  Grep", "<cmd>Telescope live_grep<cr>"),
+    dashboard.button("g", "  Grep", "<cmd>lua require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })<cr>"),
     dashboard.button("l", "  Lazy", "<cmd>Lazy<cr>"),
     dashboard.button("q", "  Quit NVIM", "<cmd>qa<cr>"),
 }

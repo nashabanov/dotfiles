@@ -18,9 +18,6 @@ map("<leader>bc", "<cmd>BufferLinePickClose<cr>", "Close Buffer")
 
 -- Telescope
 local builtin = require("telescope.builtin")
-map("<leader>ff", builtin.find_files, "Find Files")
-map("<leader>fg", builtin.live_grep, "Live Grep")
-
 map("gr", function()
     builtin.lsp_references({ include_declaration = false })
 end, "Find References")

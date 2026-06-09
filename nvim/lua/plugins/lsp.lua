@@ -1,15 +1,58 @@
 -- Mason для установки LSP серверов
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
+local servers = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" }
 
 mason.setup()
 mason_lspconfig.setup({
-    ensure_installed = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" },
+    ensure_installed = servers,
     automatic_installation = true,
+    handlers = {},
 })
 
--- Список серверов для включения
-local servers = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" }
+-- Конфигурация gopls
+local build_tags = { "e2e", "e2e_pers_reserve", "e2e_with_approve", "functional", "smoke", "integration" }
+
+vim.lsp.config("gopls", {
+    settings = {
+        gopls = {
+            buildFlags = { "-tags=" .. table.concat(build_tags, ",") },
+            analyses = {
+                unusedparams = true,
+                unusedvariable = true,
+            }
+        }
+    },
+})
+
+-- Конфигурация pyright
+vim.lsp.config("pyright", {
+    settings = {
+        python = {
+            analysis = {
+                typeCheckingMode = "basic",
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+            },
+        },
+    },
+})
+
+-- Конфигурация ruff
+vim.lsp.config('ruff', {
+    settings = {
+        ruff = {
+            lint = {
+                select = { "ALL" },
+                ignore = { "ANN" },
+            },
+            format = {
+                lineLength = 88,
+                quoteStyle = "double",
+            }
+        }
+    }
+})
 
 -- Включаем каждый сервер
 for _, server in ipairs(servers) do
