@@ -1,7 +1,18 @@
 -- Mason для установки LSP серверов
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
-local servers = { "pyright", "ruff", "gopls", "lua_ls", "vtsls", "eslint", "tailwindcss" }
+local servers = {
+    "pyright",
+    "ruff",
+    "gopls",
+    "lua_ls",
+    "vtsls",
+    "eslint",
+    "tailwindcss",
+    "rust_analyzer",
+}
+local go_build_tags = { "e2e", "e2e_pers_reserve", "e2e_with_approve", "functional", "smoke", "integration" }
+
 
 mason.setup()
 mason_lspconfig.setup({
@@ -10,13 +21,11 @@ mason_lspconfig.setup({
     handlers = {},
 })
 
--- Конфигурация gopls
-local build_tags = { "e2e", "e2e_pers_reserve", "e2e_with_approve", "functional", "smoke", "integration" }
 
 vim.lsp.config("gopls", {
     settings = {
         gopls = {
-            buildFlags = { "-tags=" .. table.concat(build_tags, ",") },
+            buildFlags = { "-tags=" .. table.concat(go_build_tags, ",") },
             analyses = {
                 unusedparams = true,
                 unusedvariable = true,
@@ -25,7 +34,6 @@ vim.lsp.config("gopls", {
     },
 })
 
--- Конфигурация pyright
 vim.lsp.config("pyright", {
     settings = {
         python = {
@@ -38,8 +46,7 @@ vim.lsp.config("pyright", {
     },
 })
 
--- Конфигурация ruff
-vim.lsp.config('ruff', {
+vim.lsp.config("ruff", {
     settings = {
         ruff = {
             lint = {
@@ -52,6 +59,25 @@ vim.lsp.config('ruff', {
             }
         }
     }
+})
+
+vim.lsp.config("rust_analizer", {
+    settings = {
+        ["rust-analyzer"] = {
+            cargo = {
+                allFeatures = true,
+            },
+            checkOnSave = {
+                command = "clippy",
+            },
+            inlayHints = {
+                bindingModeHints = true,
+                chainingHints = true,
+                closingBraceHints = true,
+                typeHints = true,
+            },
+        },
+    },
 })
 
 -- Включаем каждый сервер
