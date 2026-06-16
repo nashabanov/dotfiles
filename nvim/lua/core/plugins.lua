@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -72,9 +72,6 @@ require("lazy").setup({
     },
     {
         "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup()
-        end,
     },
     {
         "williamboman/mason-lspconfig.nvim",
@@ -89,7 +86,7 @@ require("lazy").setup({
             "williamboman/mason-lspconfig.nvim",
         },
         config = function()
-            require("plugins.lsp")
+            require("lsp")
         end,
     },
     {
@@ -280,24 +277,22 @@ require("lazy").setup({
         end,
     },
     {
-        {
-            'dmtrKovalenko/fff.nvim',
-            build = function()
-                require("fff.download").download_or_build_binary()
-            end,
-            opts = {
-                debug = {
-                    enabled = true,
-                    show_scores = true,
-                },
+        'dmtrKovalenko/fff.nvim',
+        build = function()
+            require("fff.download").download_or_build_binary()
+        end,
+        opts = {
+            debug = {
+                enabled = true,
+                show_scores = true,
             },
-            lazy = false,
-            keys = {
-                { "ff", function() require('fff').find_files() end,                                           desc = 'FFFind files' },
-                { "fg", function() require('fff').live_grep() end,                                            desc = 'LiFFFe grep' },
-                { "fz", function() require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } }) end, desc = 'Live fffuzy grep' },
-                { "fc", function() require('fff').live_grep({ query = vim.fn.expand("<cword>") }) end,        desc = 'Search current word' },
-            },
-        }
+        },
+        lazy = false,
+        keys = {
+            { "ff", function() require('fff').find_files() end,                                           desc = 'FFFind files' },
+            { "fg", function() require('fff').live_grep() end,                                            desc = 'LiFFFe grep' },
+            { "fz", function() require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } }) end, desc = 'Live fffuzy grep' },
+            { "fc", function() require('fff').live_grep({ query = vim.fn.expand("<cword>") }) end,        desc = 'Search current word' },
+        },
     },
 })

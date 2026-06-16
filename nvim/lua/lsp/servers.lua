@@ -1,0 +1,17 @@
+return {
+    "pyright",
+    "ruff",
+    "gopls",
+    "lua_ls",
+    "vtsls",
+    "eslint",
+    "tailwindcss",
+    "rust_analyzer",
+    "buf_ls",
+    "protols",
+    "yamlls",
+    "marksman",
+    "dockerls",
+    "bashls",
+    "taplo",
+}

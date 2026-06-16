@@ -10,6 +10,13 @@ local servers = {
     "eslint",
     "tailwindcss",
     "rust_analyzer",
+    "buf_ls",
+    "protols",
+    "yamlls",
+    "marksman",
+    "dockerls",
+    "bashls",
+    "taplo",
 }
 local go_build_tags = { "e2e", "e2e_pers_reserve", "e2e_with_approve", "functional", "smoke", "integration" }
 
@@ -21,6 +28,13 @@ mason_lspconfig.setup({
     handlers = {},
 })
 
+vim.diagnostic.config({
+    virtual_text = true,
+    float = {
+        border = "rounded",
+    },
+    severity_sort = true,
+})
 
 vim.lsp.config("gopls", {
     settings = {
@@ -61,7 +75,7 @@ vim.lsp.config("ruff", {
     }
 })
 
-vim.lsp.config("rust_analizer", {
+vim.lsp.config("rust_analyzer", {
     settings = {
         ["rust-analyzer"] = {
             cargo = {
@@ -80,6 +94,29 @@ vim.lsp.config("rust_analizer", {
     },
 })
 
+vim.lsp.config("yamlls", {
+    settings = {
+        yaml = {
+            schemas = {
+                ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+                ["https://json.schemastore.org/docker-compose.json"] = "docker-compose*.yml",
+                ["https://json.schemastore.org/gitlab-ci.json"] = ".gitlab-ci.yml",
+            },
+            validate = true,
+            hover = true,
+            completion = true,
+        },
+    },
+})
+
+vim.lsp.config("buf_ls", {})
+vim.lsp.config("protols", {})
+vim.lsp.config("dockerls", {})
+vim.lsp.config("marksman", {})
+vim.lsp.config("bashls", {})
+vim.lsp.config("taplo", {})
+
+
 -- Включаем каждый сервер
 for _, server in ipairs(servers) do
     vim.lsp.enable(server)
@@ -92,12 +129,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
         if not client then return end
 
+        if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+        end
+
         local opts = { buffer = ev.buf, silent = true }
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>D", vim.diagnostic.open_float, opts)
+        vim.keymap.set("n", "<leader>ih", function()
+            vim.lsp.inlay_hint.enable(
+                not vim.lsp.inlay_hint.is_enabled()
+            )
+        end)
 
         -- vim.notify("LSP attached: " .. client.name .. " for " .. vim.bo[ev.buf].filetype, vim.log.levels.INFO)
     end,
