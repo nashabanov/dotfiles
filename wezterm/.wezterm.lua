@@ -23,28 +23,17 @@ tabline.setup({
 
         tab_active = {
             {
-                'index',
-                zero_indexed = false,
-                padding = { left = 2, right = 1 },
-                fmt = function(idx) return ' ' .. idx .. ' ' end,
-            },
-            {
                 'process',
-                padding = { right = 2 },
-                max_length = 20,
+                padding = { right = 3, left = 3 },
+                max_length = 24,
             },
         },
 
         tab_inactive = {
             {
-                'index',
-                zero_indexed = false,
-                padding = { left = 1, right = 1 },
-            },
-            {
                 'process',
-                padding = { right = 1 },
-                max_length = 15,
+                padding = { right = 3, left = 3 },
+                max_length = 20,
             },
         },
     },
@@ -59,18 +48,15 @@ config.color_scheme = 'Tokyo Night Storm'
 
 -- Font
 config.font = wezterm.font_with_fallback({
-    "JetBrainsMono Nerd Font",
-    "Segoe UI Emoji",
-    "Cascadia Code"
+    "Geist Mono",
+    "Symbols Nerd Font Mono",
+    -- "CommitMono",
+    -- "Symbols Nerd Font Mono",
+    -- "JetBrainsMono Nerd Font",
+    -- "Segoe UI Emoji",
+    -- "Cascadia Code"
 })
-config.font_size = 14.5
-
-config.front_end = 'OpenGL'
-config.freetype_load_target = 'Light'
-config.freetype_render_target = 'HorizontalLcd'
-config.underline_thickness = '2px'
-config.freetype_load_flags = 'NO_HINTING'
-config.custom_block_glyphs = false
+config.font_size = 14
 
 
 -- Tab bar basic
