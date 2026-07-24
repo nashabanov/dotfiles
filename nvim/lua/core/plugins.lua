@@ -112,30 +112,18 @@ require("lazy").setup({
         config = true,
     },
     {
-        "akinsho/bufferline.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        "Shatur/neovim-ayu",
+        priority = 1000,
         config = function()
-            require("plugins.bufferline")
-        end
-    },
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 999,
-        opts = {
-            style = "storm",
-            transparent = true,
-            terminal_colors = true,
-            styles = {
-                comments = { italic = true },
-                keywords = { italic = true },
-                functions = { bold = true },
-                variables = {},
-            },
-        },
-        config = function(_, opts)
-            require("tokyonight").setup(opts)
-            vim.cmd("colorscheme tokyonight")
+            require("ayu").setup({
+                mirage = true,
+                terminal = true,
+                overrides = {
+                    Comment = { italic = true },
+                },
+            })
+            vim.cmd.colorscheme("ayu")
+            require("theme.overrides").apply()
         end,
     },
     {
@@ -153,7 +141,7 @@ require("lazy").setup({
         event = "VeryLazy",
         opts = {
             options = {
-                theme = "auto",
+                theme = "ayu",
                 component_separators = { left = "", right = "" },
                 section_separators = { left = "", right = "" },
                 globalstatus = true, -- одна статусная строка для всех окон
@@ -283,8 +271,8 @@ require("lazy").setup({
         end,
         opts = {
             debug = {
-                enabled = true,
-                show_scores = true,
+                enabled = false,
+                show_scores = false,
             },
         },
         lazy = false,

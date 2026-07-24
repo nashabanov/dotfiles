@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local theme = 'Ayu Mirage'
 
 -- Tabline settings
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
@@ -6,7 +7,7 @@ local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabl
 tabline.setup({
     options = {
         icons_enabled = true,
-        theme = 'Tokyo Night Storm',
+        theme = theme,
         tabs_enabled = true,
 
         section_separators = '',
@@ -44,7 +45,7 @@ local config = wezterm.config_builder()
 tabline.apply_to_config(config)
 
 -- Theme
-config.color_scheme = 'Tokyo Night Storm'
+config.color_scheme = theme
 
 -- Font
 config.font = wezterm.font_with_fallback({
@@ -56,7 +57,10 @@ config.font = wezterm.font_with_fallback({
     -- "Segoe UI Emoji",
     -- "Cascadia Code"
 })
-config.font_size = 14
+config.font_size = 13.5
+config.line_height = 1.1
+config.freetype_load_target = "Normal"
+config.freetype_render_target = "Normal"
 
 
 -- Tab bar basic
@@ -68,10 +72,10 @@ config.tab_bar_at_bottom = false
 
 -- Window
 config.window_padding = {
-    left = 0,
-    right = 0,
-    top = 0,
-    bottom = 0,
+    left = 8,
+    right = 8,
+    top = 8,
+    bottom = 6,
 }
 
 config.window_decorations = 'RESIZE'
