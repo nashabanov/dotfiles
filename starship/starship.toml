@@ -3,99 +3,63 @@ command_timeout = 500
 add_newline = true
 
 format = """
-$time\
-$username\
-$directory\
-$git_branch\
-$git_status\
-$git_metrics\
-$golang\
-$python\
-$lua\
-$cmd_duration
+$directory$git_branch$git_status$golang$python$lua $cmd_duration
 $character"""
 
-[username]
-show_always = false
-style_user = "bold blue"
-format = "[$user]($style) "
-
 [directory]
-truncation_length = 5
-truncation_symbol = "…/"
-style = "bold"
-format = "[$path]($style) "
+truncation_length = 4
+truncation_symbol = "~/"
+style = "fg:#768390"
+format = "$path "
 
 [git_branch]
 symbol = " "
-style = "bold"
+style = "fg:#539bf5"
 format = "[$symbol$branch]($style) "
 
 [git_status]
-style = "bold yellow"
-format = "([\\[$all_status$ahead_behind\\]]($style) )"
-conflicted = "🏳"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕"
-untracked = "?${count}"
-stashed = "📦${count}"
-modified = "!${count}"
-staged = "+${count}"
-renamed = "»${count}"
-deleted = "✘${count}"
+format = "([$all_status$ahead_behind]($style))"
+style = "fg:#c69026"
+
+ahead = "[⇡${count}](fg:#539bf5)"
+behind = "[⇣${count}](fg:#539bf5)"
+diverged = "[⇕](fg:#986ee2)"
+
+untracked = "[?${count}](fg:#c69026)"
+modified = "[!${count}](fg:#c69026)"
+staged = "[+${count}](fg:#57ab5a)"
+renamed = "[»${count}](fg:#768390)"
+
+conflicted = "[✖](fg:#f47067)"
+deleted = "[✘${count}](fg:#f47067)"
+
+stashed = "[${count}](fg:#768390)"
 
 [golang]
 symbol = " "
-style = "bold cyan"
+style = "fg:#539bf5"
 format = "[$symbol$version]($style) "
 
 [python]
 symbol = " "
-style = "bold yellow"
+style = "fg:#c69026"
 format = "[$symbol$version]($style) "
 python_binary = ["./.venv/bin/python", "python", "python3"]
 detect_extensions = ["py"]
-detect_files = ["pyproject.toml"]
+detect_files = ["pyproject.toml", "Pipfile", "requirements.txt"]
 detect_folders = [".venv"]
 
 [lua]
 symbol = " "
-style = "bold blue"
-format = '[$symbol$version(\($virtualenv\))]($style) '
-
-[character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
-format = "$symbol "
-
-[custom.newline]
-command = "echo ''"
-when = "true"
-format = "\n"
+style = "fg:#539bf5"
+format = "[$symbol$version]($style) "
 
 [cmd_duration]
-min_time = 500
-style = "bold yellow"
-format = "took [$duration]($style) "
-show_milliseconds = true
-show_notifications = false
+min_time = 1000
+style = "fg:#636366"
+format = "[$duration]($style) "
 
-[git_metrics]
-added_style = "bold green"
-deleted_style = "bold red"
-format = "([+$added]($added_style) )([-$deleted]($deleted_style) )"
-disabled = false
-
-
-[package]
-disabled = true
-
-[rust]
-disabled = true
-
-[nodejs]
-disabled = true
-
-[terraform]
-disabled = true
+[character]
+success_symbol = "[❯](fg:#539bf5)"
+error_symbol = "[❯](fg:#f47067)"
+vimcmd_symbol = "[❮](fg:#c69026)"

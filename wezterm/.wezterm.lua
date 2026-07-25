@@ -1,5 +1,5 @@
 local wezterm = require 'wezterm'
-local theme = 'Ayu Mirage'
+local theme = 'Github Dark (Gogh)'
 
 -- Tabline settings
 local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
@@ -49,18 +49,15 @@ config.color_scheme = theme
 
 -- Font
 config.font = wezterm.font_with_fallback({
-    "Geist Mono",
+    { family = "Geist Mono", weight = "Regular" },
     "Symbols Nerd Font Mono",
-    -- "CommitMono",
-    -- "Symbols Nerd Font Mono",
-    -- "JetBrainsMono Nerd Font",
-    -- "Segoe UI Emoji",
-    -- "Cascadia Code"
 })
 config.font_size = 13.5
-config.line_height = 1.1
+config.line_height = 1.25
 config.freetype_load_target = "Normal"
 config.freetype_render_target = "Normal"
+config.underline_thickness = "1pt"
+config.front_end = "WebGpu"
 
 
 -- Tab bar basic
@@ -72,25 +69,26 @@ config.tab_bar_at_bottom = false
 
 -- Window
 config.window_padding = {
-    left = 8,
-    right = 8,
-    top = 8,
-    bottom = 6,
+    left = 12,
+    right = 12,
+    top = 12,
+    bottom = 12,
 }
 
 config.window_decorations = 'RESIZE'
 config.initial_rows = 50
 config.initial_cols = 120
 
-config.window_background_opacity = 0.95
+config.window_background_opacity = 0.96
 config.text_background_opacity = 1
+config.macos_window_background_blur = 25
 
 -- Cursor
 config.default_cursor_style = 'BlinkingBar'
 config.cursor_blink_rate = 600
 config.cursor_blink_ease_in = 'EaseIn'
 config.cursor_blink_ease_out = 'EaseOut'
-config.cursor_thickness = 0.3
+config.cursor_thickness = 0.25
 
 -- URL on click or CTRL
 config.mouse_bindings = {
@@ -100,5 +98,25 @@ config.mouse_bindings = {
         action = wezterm.action.OpenLinkAtMouseCursor,
     },
 }
+
+config.keys = {
+    { key = 'h', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Left' },
+    { key = 'j', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Down' },
+    { key = 'k', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Up' },
+    { key = 'l', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Right' },
+
+    { key = 's', mods = 'CTRL', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    { key = 'v', mods = 'CTRL', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+
+    { key = 'q', mods = 'CTRL', action = wezterm.action.CloseCurrentPane { confirm = false } },
+
+    { key = 'h', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Left', 3 } },
+    { key = 'j', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Down', 3 } },
+    { key = 'k', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Up', 3 } },
+    { key = 'l', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Right', 3 } },
+
+    { key = 'z', mods = 'CTRL',       action = wezterm.action.TogglePaneZoomState }, 
+}
+
 
 return config

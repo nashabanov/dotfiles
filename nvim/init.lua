@@ -12,3 +12,23 @@ vim.opt.cmdheight = 0
 -- Basic
 require("core.plugins")
 require("core.mappings")
+
+-- Общая прозрачность для всего интерфейса
+vim.opt.winblend = 0
+vim.opt.pumblend = 0
+vim.opt.fillchars = {
+    vert = " ",
+    eob = " ",
+    fold = " ",
+}
+
+vim.api.nvim_create_autocmd("WinNew", {
+    callback = function()
+        local win = vim.api.nvim_get_current_win()
+        local config = vim.api.nvim_win_get_config(win)
+
+        if config.relative ~= "" then
+            vim.wo[win].winblend = 25
+        end
+    end,
+})
