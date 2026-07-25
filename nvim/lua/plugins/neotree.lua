@@ -107,12 +107,12 @@ local function setup_neotree_ui()
 
     -- Заголовки и директории
     h(0, "NeoTreeRootName", { fg = "#f5f5f7", bold = true })
-    h(0, "NeoTreeDirectoryName", { fg = "#539bf5", bold = false })
-    h(0, "NeoTreeDirectoryIcon", { fg = "#539bf5", bold = false })
+    h(0, "NeoTreeDirectoryName", { fg = "#adbac7", bold = false })
+    h(0, "NeoTreeDirectoryIcon", { fg = "#adbac7", bold = false })
 
     -- Файлы
     h(0, "NeoTreeFileName", { fg = "#adbac7" })
-    h(0, "NeoTreeFileNameOpened", { fg = "#539bf5", underline = false, italic = true })
+    h(0, "NeoTreeFileNameOpened", { fg = "#adbac7", underline = false, italic = true })
     h(0, "NeoTreeFileIcon", { fg = "#768390" })
 
     -- Модифицированные файлы
