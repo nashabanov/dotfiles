@@ -100,22 +100,22 @@ config.mouse_bindings = {
 }
 
 config.keys = {
-    { key = 'h', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Left' },
-    { key = 'j', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Down' },
-    { key = 'k', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Up' },
-    { key = 'l', mods = 'CTRL', action = wezterm.action.ActivatePaneDirection 'Right' },
+    { key = 'h', mods = 'CTRL',       action = wezterm.action.ActivatePaneDirection 'Left' },
+    { key = 'j', mods = 'CTRL',       action = wezterm.action.ActivatePaneDirection 'Down' },
+    { key = 'k', mods = 'CTRL',       action = wezterm.action.ActivatePaneDirection 'Up' },
+    { key = 'l', mods = 'CTRL',       action = wezterm.action.ActivatePaneDirection 'Right' },
 
-    { key = 's', mods = 'CTRL', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-    { key = 'v', mods = 'CTRL', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+    { key = 's', mods = 'CTRL',       action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    { key = 'v', mods = 'CTRL',       action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
 
-    { key = 'q', mods = 'CTRL', action = wezterm.action.CloseCurrentPane { confirm = false } },
+    { key = 'q', mods = 'CTRL',       action = wezterm.action.CloseCurrentPane { confirm = false } },
 
     { key = 'h', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Left', 3 } },
     { key = 'j', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Down', 3 } },
     { key = 'k', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Up', 3 } },
     { key = 'l', mods = 'CTRL|SHIFT', action = wezterm.action.AdjustPaneSize { 'Right', 3 } },
 
-    { key = 'z', mods = 'CTRL',       action = wezterm.action.TogglePaneZoomState }, 
+    { key = 'z', mods = 'CTRL',       action = wezterm.action.TogglePaneZoomState },
 }
 
 
