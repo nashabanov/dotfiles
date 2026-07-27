@@ -3,7 +3,7 @@ command_timeout = 500
 add_newline = true
 
 format = """
-$directory$git_branch$git_status$golang$python$lua $cmd_duration
+$directory$git_branch$git_status $golang $python $lua $cmd_duration
 $character"""
 
 [directory]
