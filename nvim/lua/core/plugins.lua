@@ -480,9 +480,11 @@ require("lazy").setup({
     {
         "declancm/cinnamon.nvim",
         version = "*",
-        opts = {
-            mode = "cursor",
-            delay = 5,
-        },
+        config = function()
+            require("cinnamon").setup({
+                delay = 10,
+                mode = "cursor",
+            })
+        end,
     }
 })
