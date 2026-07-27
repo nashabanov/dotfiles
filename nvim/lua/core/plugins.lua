@@ -477,4 +477,12 @@ require("lazy").setup({
             { "fc", function() require('fff').live_grep({ query = vim.fn.expand("<cword>") }) end,        desc = 'Search current word' },
         },
     },
+    {
+        "declancm/cinnamon.nvim",
+        version = "*",
+        opts = {
+            mode = "cursor",
+            delay = 5,
+        },
+    }
 })

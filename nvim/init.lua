@@ -8,8 +8,9 @@ vim.opt.ignorecase = true     -- Игнор регистра в поиске
 vim.opt.smartcase = true      -- Умный поиск с учетом регистра
 vim.opt.smartindent = true    -- Умные отступы
 vim.opt.cmdheight = 0
+vim.opt.breakindent = true
 
--- Basic
+-- Импорты
 require("core.plugins")
 require("core.mappings")
 
