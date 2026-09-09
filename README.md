@@ -60,17 +60,17 @@ cd ~/dotfiles
 brew bundle --file=Brewfile
 ```
 
-The Brewfile includes uv, Go, Python 3.13, gitui, WezTerm, Starship, Neovim, and JetBrains Mono Nerd Font.
+The Brewfile includes:
 
-Additional packages used by the shell configuration are not included in the Brewfile:
-
-```sh
-brew install eza fzf ripgrep bat fzf-tab zsh-completions zsh-autosuggestions zsh-syntax-highlighting
-```
+- Git, uv, Go, Node.js (including npm for Mason-managed language servers), and Python 3.13.
+- Neovim, gitui, WezTerm, and Starship.
+- eza, fzf, ripgrep, and bat.
+- fzf-tab, zsh-completions, zsh-autosuggestions, and zsh-syntax-highlighting.
+- Geist Mono and Symbols Nerd Font, matching the WezTerm configuration.
 
 The `ls` alias requires `eza`. The other shell integrations load when their commands or files are available. Ripgrep also supports Neovim's Telescope text search.
 
-WezTerm currently selects **Geist Mono** with **Symbols Nerd Font Mono** as a fallback. Install these fonts separately, or edit `wezterm/.wezterm.lua` to use the JetBrains Mono Nerd Font installed by the Brewfile.
+WezTerm selects **Geist Mono** with **Symbols Nerd Font Mono** as a fallback. Both are installed by the Brewfile.
 
 ### Link configurations
 
