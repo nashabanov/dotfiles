@@ -21,10 +21,12 @@ dotfiles/
 ├── nvim/
 │   ├── init.lua
 │   ├── lazy-lock.json
-│   └── lua/
-│       ├── core/
-│       ├── lsp/
-│       └── plugins/
+│   ├── lua/
+│   │   ├── core/
+│   │   ├── lsp/
+│   │   └── plugins/
+│   └── tests/
+│       └── format.lua
 ├── starship/
 │   └── starship.toml
 ├── wezterm/
@@ -140,6 +142,31 @@ File search uses `<leader>f` prefixes so the built-in `f{char}` motion remains
 available. Cinnamon owns the smooth navigation mappings (`n`, `N`, `zz`, `zt`,
 `zb`, `gg`, and `G`). Completion and dashboard shortcuts stay in their respective
 plugin configurations.
+
+## Neovim format on save
+
+Saving a regular, writable buffer formats it through one attached LSP server
+that supports document formatting. Python uses Ruff, Lua uses lua_ls, Go uses
+gopls, and Rust uses rust-analyzer. If the preferred server is unavailable,
+formatting is skipped. Other file types use the first capable server by name
+(then client ID), so attachment order does not change the choice.
+
+Formatting completes before the file is written, with a 1,000 ms request timeout.
+A timeout or formatter error reports a warning and allows saving to continue.
+Buffers without a matching formatter are skipped silently.
+
+Run `:FormatOnSaveToggle` to disable or re-enable automatic formatting for the
+current buffer. This does not affect other buffers and resets when the buffer is
+deleted. For configuration or project hooks, set `vim.b.autoformat = false`.
+
+Run the formatting regression checks from the repository root:
+
+```sh
+nvim --headless -u NONE -i NONE -l nvim/tests/format.lua
+```
+
+The checks use temporary files and simulated LSP clients, including Neovim's
+synchronous request timeout and cancellation, without installing plugins.
 
 ## Verify links
 

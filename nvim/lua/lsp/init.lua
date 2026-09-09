@@ -23,10 +23,4 @@ for _, server in ipairs(servers) do
     vim.lsp.enable(server)
 end
 
--- format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-    group = vim.api.nvim_create_augroup("LspFormat", {}),
-    callback = function(ev)
-        format.format(ev.buf)
-    end,
-})
+format.setup()
