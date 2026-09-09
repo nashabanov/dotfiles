@@ -13,13 +13,6 @@ mason_lspconfig.setup({
     automatic_installation = true,
 })
 
--- diagnostics (глобально)
-vim.diagnostic.config({
-    virtual_text = true,
-    float = { border = "rounded" },
-    severity_sort = true,
-})
-
 -- setup servers
 for _, server in ipairs(servers) do
     local config = configs[server] or {}

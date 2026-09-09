@@ -114,7 +114,11 @@ Open a new Zsh session to load the shell configuration. Run `nvim` to bootstrap 
 Both leader keys are Space and are set in `nvim/init.lua` before plugins load.
 General editor mappings live in `lua/core/mappings.lua`, buffer-local LSP
 mappings in `lua/lsp/attach.lua`, and plugin mappings alongside their settings
-in `lua/plugins/`. `lua/core/plugins.lua` registers the plugin specifications.
+in `lua/plugins/`. Every plugin module returns a Lazy specification; setup runs
+through its `opts` or `config` when Lazy loads the plugin. `lua/core/plugins.lua`
+registers these specifications, while `lua/core/ui.lua` owns global transparency
+and diagnostic defaults. Neo-tree highlights and window settings remain in its
+plugin module.
 
 | Keys (normal mode) | Action |
 | --- | --- |
