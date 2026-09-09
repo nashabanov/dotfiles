@@ -136,12 +136,21 @@ plugin module.
 | `<leader>ca` / `<leader>rn` | Code action / rename symbol (LSP) |
 | `<leader>D` / `<leader>ih` | Line diagnostics / toggle buffer inlay hints (LSP) |
 | `]h` / `[h` | Next / previous Git hunk |
+| `<leader>hs` | Stage/unstage the Git hunk under the cursor |
+| `<leader>hp` / `<leader>hi` | Preview the current Git hunk in a popup / inline |
 | `<leader>?` | Show buffer-local mappings with WhichKey |
 
 File search uses `<leader>f` prefixes so the built-in `f{char}` motion remains
 available. Cinnamon owns the smooth navigation mappings (`n`, `N`, `zz`, `zt`,
 `zb`, `gg`, and `G`). Completion and dashboard shortcuts stay in their respective
 plugin configurations.
+
+Gitsigns uses `nav_hunk` for navigation and `stage_hunk` for staging and unstaging.
+On a staged hunk with no unstaged changes at the cursor, `<leader>hs` unstages it;
+when unstaged changes are present there, it stages those changes first. The old
+`<leader>hu` (undo the last staging action) has been removed. `<leader>hi` opens
+an inline preview of the current hunk; it replaces the old `<leader>td` shortcut
+for showing deleted lines throughout the buffer.
 
 ## Neovim format on save
 
