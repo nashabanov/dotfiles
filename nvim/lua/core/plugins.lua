@@ -44,21 +44,7 @@ require("lazy").setup({
             })
         end,
     },
-    {
-        "MeanderingProgrammer/treesitter-modules.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-        opts = {
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = "<Enter>",
-                    node_incremental = "<Enter>",
-                    scope_incremental = "<Tab>",
-                    node_decremental = "<BS>",
-                },
-            },
-        },
-    },
+    require("plugins.treesitter-modules"),
     {
         "folke/lazydev.nvim",
         ft = "lua",
@@ -282,29 +268,8 @@ require("lazy").setup({
             },
         }
     },
-    {
-        "folke/which-key.nvim",
-        event = "VeryLazy",
-        opts = {
-            preset = "modern",
-        },
-        keys = {
-            {
-                "<leader>?",
-                function() require("which-key").show({ global = false }) end,
-                desc = "Buffer Local Keymaps (which-key)",
-            },
-        },
-    },
-    {
-        "numToStr/Comment.nvim",
-        keys = {
-            { "gcc", mode = "n",          desc = "Comment toggle current line" },
-            { "gc",  mode = { "n", "o" }, desc = "Comment toggle linewise" },
-            { "gc",  mode = "x",          desc = "Comment toggle linewise (visual)" },
-        },
-        opts = {},
-    },
+    require("plugins.which-key"),
+    require("plugins.comment"),
     {
         "rcarriga/nvim-notify",
         opts = {
@@ -378,72 +343,7 @@ require("lazy").setup({
         event = "BufReadPost",
         main = "ibl",
     },
-    {
-        "lewis6991/gitsigns.nvim",
-        event = "BufReadPre",
-        opts = {
-            signs = {
-                add = { text = "▎" },
-                change = { text = "▎" },
-                delete = { text = "▎" },
-                topdelete = { text = "▎" },
-                changedelete = { text = "" },
-                untracked = { text = "▎" },
-            },
-            signcolumn = true,
-            numhl = false,
-            linehl = false,
-            word_diff = false,
-            watch_gitdir = {
-                interval = 1000,
-                follow_files = true,
-            },
-            attach_to_untracked = true,
-            current_line_blame = false,
-            current_line_blame_opts = {
-                virt_text = true,
-                virt_text_pos = "eol",
-                delay = 200,
-                ignore_whitespace = false,
-            },
-            current_line_blame_formatter = "<author> · <author_time:%Y-%m-%d> · <message>",
-            sign_priority = 6,
-            update_debounce = 100,
-            status_formatter = nil,
-            max_file_length = 40000,
-            preview_config = {
-                border = "rounded",
-                style = "minimal",
-                relative = "cursor",
-                row = 0,
-                col = 1,
-            },
-            on_attach = function(bufnr)
-                local gs = package.loaded.gitsigns
-
-                local function map(mode, l, r, opts)
-                    opts = opts or {}
-                    opts.buffer = bufnr
-                    vim.keymap.set(mode, l, r, opts)
-                end
-
-                map("n", "]h", gs.next_hunk, { desc = "Next hunk" })
-                map("n", "[h", gs.prev_hunk, { desc = "Previous hunk" })
-
-                map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })
-                map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset hunk" })
-                map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
-                map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
-                map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
-                map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
-                map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, { desc = "Blame line" })
-                map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame" })
-                map("n", "<leader>hd", gs.diffthis, { desc = "Diff this" })
-                map("n", "<leader>hD", function() gs.diffthis("~") end, { desc = "Diff this ~" })
-                map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
-            end,
-        },
-    },
+    require("plugins.gitsigns"),
     {
         "karb94/neoscroll.nvim",
         opts = {
@@ -458,33 +358,6 @@ require("lazy").setup({
             require("mini.cursorword").setup()
         end,
     },
-    {
-        'dmtrKovalenko/fff.nvim',
-        build = function()
-            require("fff.download").download_or_build_binary()
-        end,
-        opts = {
-            debug = {
-                enabled = false,
-                show_scores = false,
-            },
-        },
-        lazy = false,
-        keys = {
-            { "ff", function() require('fff').find_files() end,                                           desc = 'FFFind files' },
-            { "fg", function() require('fff').live_grep() end,                                            desc = 'LiFFFe grep' },
-            { "fz", function() require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } }) end, desc = 'Live fffuzy grep' },
-            { "fc", function() require('fff').live_grep({ query = vim.fn.expand("<cword>") }) end,        desc = 'Search current word' },
-        },
-    },
-    {
-        "declancm/cinnamon.nvim",
-        version = "*",
-        config = function()
-            require("cinnamon").setup({
-                delay = 10,
-                mode = "cursor",
-            })
-        end,
-    }
+    require("plugins.fff"),
+    require("plugins.cinnamon")
 })

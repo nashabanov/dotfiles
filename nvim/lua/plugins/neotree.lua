@@ -156,3 +156,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 setup_neotree_ui()
+
+vim.keymap.set("n", "<leader>e", "<cmd>Neotree right focus<CR>", { desc = "Neotree" })
+vim.keymap.set("n", "<leader>g", "<cmd>Neotree right git_status<CR>", { desc = "Neotree Git" })

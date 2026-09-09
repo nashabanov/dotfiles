@@ -109,6 +109,34 @@ Keep the repository at this location: edits to linked files take effect directly
 
 Open a new Zsh session to load the shell configuration. Run `nvim` to bootstrap Lazy and the configured plugins. WezTerm downloads its tabline plugin when loading its configuration.
 
+## Neovim key mappings
+
+Both leader keys are Space and are set in `nvim/init.lua` before plugins load.
+General editor mappings live in `lua/core/mappings.lua`, buffer-local LSP
+mappings in `lua/lsp/attach.lua`, and plugin mappings alongside their settings
+in `lua/plugins/`. `lua/core/plugins.lua` registers the plugin specifications.
+
+| Keys (normal mode) | Action |
+| --- | --- |
+| `<leader>1` / `<leader>2` | Previous / next buffer |
+| `<leader>bc` | Close the current buffer (unsaved changes require saving first) |
+| `<leader>e` / `<leader>g` | Focus the file tree / Git status tree |
+| `<leader>ff` | Find files |
+| `<leader>fg` / `<leader>fz` | Search text / fuzzy search text |
+| `<leader>fc` | Search the word under the cursor |
+| `gd` / `gr` / `gy` | Definition / references / type definition (LSP) |
+| `gi` / `go` | Incoming / outgoing calls (LSP) |
+| `K` | Hover documentation (LSP) |
+| `<leader>ca` / `<leader>rn` | Code action / rename symbol (LSP) |
+| `<leader>D` / `<leader>ih` | Line diagnostics / toggle buffer inlay hints (LSP) |
+| `]h` / `[h` | Next / previous Git hunk |
+| `<leader>?` | Show buffer-local mappings with WhichKey |
+
+File search uses `<leader>f` prefixes so the built-in `f{char}` motion remains
+available. Cinnamon owns the smooth navigation mappings (`n`, `N`, `zz`, `zt`,
+`zb`, `gg`, and `G`). Completion and dashboard shortcuts stay in their respective
+plugin configurations.
+
 ## Verify links
 
 Run the following in Zsh or Bash and compare the destinations with the table above:

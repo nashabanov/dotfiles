@@ -1,3 +1,7 @@
+-- Set leaders before loading plugins and mappings.
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- Базовые настройки
 vim.opt.number = true         -- Нумерация строк
 vim.opt.relativenumber = true -- Относительная нумерация
