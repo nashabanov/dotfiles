@@ -10,6 +10,7 @@ Desktop.ini
 
 # Logs
 *.log
+.nvimlog
 
 # Editor configs
 .vscode/settings.json
