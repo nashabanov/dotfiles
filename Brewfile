@@ -7,6 +7,7 @@ brew "python@3.13"
 
 # Editor and Git UI
 brew "neovim"
+brew "tree-sitter" # CLI for compiling Neovim parsers (also requires a C compiler)
 brew "gitui"
 
 # Shell prompt, navigation, search, and previews

@@ -1,18 +1,12 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    -- Last revision before Neovim 0.11 support was removed.
+    commit = "90cd6580e720caedacb91fdd587b747a6e77d61f",
     build = ":TSUpdate",
     lazy = false,
-    priority = 1000,
     config = function()
-        require("nvim-treesitter.install").prefer_git = true
-        vim.api.nvim_create_autocmd("BufReadPost", {
-            callback = function()
-                local bufnr = vim.api.nvim_get_current_buf()
-                local lang = vim.bo[bufnr].filetype
-                if lang ~= "" then
-                    pcall(vim.treesitter.start, bufnr, lang)
-                end
-            end,
-        })
+        -- This parser set uses JSON5 for JSON with comments.
+        vim.treesitter.language.register("json5", "jsonc")
     end,
 }
