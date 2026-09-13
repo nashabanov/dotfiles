@@ -8,6 +8,7 @@ local format = require("lsp.format")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 mason.setup()
+require("lsp.go_tags").setup()
 
 -- Configure completion capabilities before any server is enabled.
 for _, server in ipairs(servers) do

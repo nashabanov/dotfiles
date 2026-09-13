@@ -4,11 +4,12 @@ local root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h:h")
 vim.opt.rtp:prepend(root)
 local format = require("lsp.format")
 local clients, calls, notifications = {}, {}, {}
-local original_get_clients, original_notify = vim.lsp.get_clients, vim.notify
+local original_get_clients, original_notify, original_notify_once = vim.lsp.get_clients, vim.notify, vim.notify_once
 local temp_dir = vim.fn.tempname()
 vim.fn.mkdir(temp_dir, "p")
 
 vim.notify = function(message) notifications[#notifications + 1] = message end
+vim.notify_once = vim.notify
 vim.lsp.get_clients = function(filter)
     assert(filter.method == "textDocument/formatting")
     return vim.tbl_filter(function(client)
@@ -47,6 +48,7 @@ local function run()
         vim.bo[first].readonly = false
         vim.bo[first].modifiable = true
         vim.b[first].autoformat = nil
+        vim.b[first].lsp_formatter = nil
         vim.api.nvim_buf_set_lines(first, 0, -1, false, { "raw" })
         calls, notifications = {}, {}
     end
@@ -64,12 +66,21 @@ local function run()
 
     reset("javascript")
     clients = { client("z_server", 1, first), client("a_server", 2, first) }
-    save("formatted")
-    assert(vim.deep_equal(calls, { 2 }), "Fallback must be stable by name")
+    save("raw")
+    vim.wait(50, function() return #notifications > 0 end)
+    assert(#calls == 0 and #notifications == 1, "Ambiguous formatters must not modify the file")
+
     reset("javascript")
-    clients = { clients[2], clients[1] }
+    vim.b[first].lsp_formatter = "z_server"
     save("formatted")
-    assert(vim.deep_equal(calls, { 2 }), "Attachment order must not affect selection")
+    assert(vim.deep_equal(calls, { 1 }), "Explicit buffer selection must win")
+    assert(vim.b[second].lsp_formatter == nil, "Selection leaked to another buffer")
+
+    reset("python")
+    clients = { client("ruff", 1, first), client("project_formatter", 2, first) }
+    vim.b[first].lsp_formatter = "project_formatter"
+    save("formatted")
+    assert(vim.deep_equal(calls, { 2 }), "Explicit selection must override language preference")
 
     reset("python")
     clients = { client("pyright", 1, first) }
@@ -159,7 +170,7 @@ local function run()
 end
 
 local ok, err = xpcall(run, debug.traceback)
-vim.lsp.get_clients, vim.notify = original_get_clients, original_notify
+vim.lsp.get_clients, vim.notify, vim.notify_once = original_get_clients, original_notify, original_notify_once
 vim.fn.delete(temp_dir, "rf")
 if not ok then
     io.stderr:write(err .. "\n")

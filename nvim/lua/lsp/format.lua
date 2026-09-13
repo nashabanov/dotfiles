@@ -12,7 +12,7 @@ local function select_client(bufnr)
         bufnr = bufnr,
         method = "textDocument/formatting",
     })
-    local name = preferred[vim.bo[bufnr].filetype]
+    local name = vim.b[bufnr].lsp_formatter or preferred[vim.bo[bufnr].filetype]
 
     -- Keep the choice independent of the order in which servers attach.
     table.sort(clients, function(a, b)
@@ -20,9 +20,19 @@ local function select_client(bufnr)
         return a.name < b.name
     end)
 
-    for _, client in ipairs(clients) do
-        if not name or client.name == name then return client end
+    if name then
+        for _, client in ipairs(clients) do
+            if client.name == name then return client end
+        end
+        return
     end
+
+    if #clients == 0 then return end
+    if clients[1].name == clients[#clients].name then return clients[1] end
+
+    -- Different formatters can disagree about project settings. Do not pick
+    -- one arbitrarily; the buffer can explicitly select its LSP by name.
+    return nil, "Multiple LSP formatters; set vim.b.lsp_formatter to choose one for this buffer"
 end
 
 function M.format(bufnr)
@@ -31,7 +41,10 @@ function M.format(bufnr)
     if vim.b[bufnr].autoformat == false then return end
     if vim.bo[bufnr].buftype ~= "" or not vim.bo[bufnr].modifiable or vim.bo[bufnr].readonly then return end
 
-    local client = select_client(bufnr)
+    local client, selection_error = select_client(bufnr)
+    if selection_error then
+        vim.schedule(function() vim.notify_once(selection_error, vim.log.levels.WARN) end)
+    end
     if not client then return end
 
     -- Finish edits before writing. A failed request must not cancel the save.
