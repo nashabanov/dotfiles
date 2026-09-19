@@ -34,7 +34,6 @@ require("lazy").setup({
     require("plugins.noice"),
     require("plugins.indent-blankline"),
     require("plugins.gitsigns"),
-    require("plugins.neoscroll"),
     require("plugins.cursorword"),
     require("plugins.fff"),
     require("plugins.cinnamon")
