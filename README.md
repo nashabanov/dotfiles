@@ -175,6 +175,13 @@ nvim --headless -u NONE -i NONE -l nvim/tests/format.lua
 The checks use temporary files and simulated LSP clients, including Neovim's
 synchronous request timeout and cancellation, without installing plugins.
 
+To validate completion, Gitsigns, and Treesitter configuration without
+installing plugins:
+
+```sh
+nvim --headless -u NONE -i NONE -l nvim/tests/plugins.lua
+```
+
 ## Verify links
 
 Run the following in Zsh or Bash and compare the destinations with the table above:
