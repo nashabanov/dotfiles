@@ -82,9 +82,7 @@ The intended script entry point is:
 bash install.sh
 ```
 
-The installer replaces existing symlinks automatically. For an existing regular file or directory, it asks before deleting and replacing it; it does not create backups.
-
-**Current script limitation:** both shell scripts use post-increment counters with `set -e`, which can terminate execution after the first processed item. Until this is fixed, use the manual commands below to complete installation. Back up or move any existing configurations first; these commands intentionally do not overwrite them.
+The installer replaces existing symlinks automatically. For an existing regular file or directory, it asks before deleting and replacing it; it does not create backups. It continues with the remaining links if one target is skipped or fails, then returns a nonzero status.
 
 ```sh
 mkdir -p ~/.config/gitui
@@ -198,7 +196,7 @@ cd ~/dotfiles
 bash uninstall.sh
 ```
 
-The script asks for confirmation and removes symlinks at the configured paths, without checking their destinations. It preserves regular files and directories, but skips broken symlinks. The counter limitation described above also applies to uninstallation.
+The script asks for confirmation and removes only symlinks whose destinations match this repository. It preserves regular files, directories, foreign symlinks, and broken symlinks that do not point to a managed source.
 
 To remove the links manually, including broken links, while checking that they point to this repository:
 
