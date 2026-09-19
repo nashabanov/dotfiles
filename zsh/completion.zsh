@@ -1,10 +1,13 @@
-if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
-  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-fi
+if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
+  if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+  fi
 
-if [[ -d /opt/homebrew/share/zsh-completions ]]; then
-  fpath=(/opt/homebrew/share/zsh-completions $fpath)
+  if [[ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]]; then
+    fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+  fi
 fi
+typeset -U fpath
 
 autoload -Uz compinit
 compinit -C

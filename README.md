@@ -48,9 +48,9 @@ dotfiles/
 
 - macOS with Git, Homebrew, Bash, and Zsh.
 - Internet access for installing packages and downloading editor and terminal plugins.
-- Clone the repository into `~/dotfiles`: `zsh/.zshrc` sources files from that exact path.
+- Clone the repository into any directory.
 
-The Zsh configuration uses `/opt/homebrew` for Homebrew paths and plugin integration, matching the Apple Silicon layout. Adjust the paths in `zsh/` if your Homebrew installation uses a different prefix.
+The Zsh configuration derives its own location and detects the Homebrew prefix, supporting both Apple Silicon and Intel installations.
 
 ## Installation
 
