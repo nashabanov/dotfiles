@@ -19,6 +19,7 @@ require("lazy").setup({
     require("plugins.mason"),
     require("plugins.mason-lspconfig"),
     require("plugins.lsp"),
+    require("plugins.lint"),
     require("plugins.cmp"),
     require("plugins.autopairs"),
     require("plugins.telescope"),
