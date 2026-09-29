@@ -5,6 +5,7 @@ vim.opt.rtp:prepend(root)
 local ruff = vim.env.RUFF_BIN or vim.fn.exepath("ruff")
 if ruff == "" then ruff = vim.fn.stdpath("data") .. "/mason/bin/ruff" end
 assert(vim.fn.executable(ruff) == 1, "Install Ruff or set RUFF_BIN")
+dofile(root .. "/tests/helpers/go_context.lua")
 local configs = require("lsp.config")
 local format = require("lsp.format")
 local dir = vim.fn.tempname()

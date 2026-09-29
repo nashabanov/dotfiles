@@ -1,11 +1,13 @@
 -- nvim --headless -u NONE -i NONE -l nvim/tests/go_lint.lua
 local root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h:h")
 vim.opt.rtp:prepend(root)
+dofile(root .. "/tests/helpers/go_context.lua")
+local context = require("go_context")
 local go_lint = require("lsp.go_lint")
 local temp = vim.fn.tempname()
 vim.fn.mkdir(temp, "p")
 vim.fn.writefile({ "module example.com/test" }, temp .. "/go.mod")
-vim.fn.writefile({ "integration, smoke" }, temp .. "/.nvim-go-tags")
+context.set({ tags = { "integration", "smoke" } }, { root = temp })
 vim.cmd.edit(temp .. "/main.go")
 vim.bo.filetype = "go"
 
@@ -13,6 +15,7 @@ local original_get_clients, original_executable = vim.lsp.get_clients, vim.fn.ex
 local calls = {}
 local normalized_temp = vim.uv.fs_realpath(temp) or temp
 vim.lsp.get_clients = function(filter)
+    if filter.bufnr == nil then return {} end
     assert(filter.bufnr == 0 or filter.bufnr == vim.api.nvim_get_current_buf())
     return { { config = { root_dir = temp } } }
 end
@@ -27,12 +30,12 @@ package.loaded.lint = {
 }
 
 local ok, err = xpcall(function()
-    assert(go_lint.workspace_root(0) == normalized_temp)
+    assert(context.root({ bufnr = 0 }) == normalized_temp)
     go_lint.run()
     assert(#calls == 1 and calls[1].name == "golangcilint" and calls[1].cwd == normalized_temp)
     assert(vim.deep_equal(calls[1].linter.args, { "run", "--build-tags=integration,smoke", calls[1].linter.args[3] }))
     assert(type(calls[1].linter.args[3]) == "function")
-    vim.fn.writefile({ "" }, temp .. "/.nvim-go-tags")
+    context.clear({ root = temp })
     local linter = { args = { "run" } }
     assert(go_lint.with_build_tags(linter, temp) == linter and vim.deep_equal(linter.args, { "run" }))
 end, debug.traceback)
