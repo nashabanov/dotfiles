@@ -3,7 +3,7 @@
 return {
     gopls = {
         settings = { gopls = {} },
-        before_init = require("go_context").before_init,
+        before_init = require("go-context").before_init,
     },
     ruff = {
         init_options = {

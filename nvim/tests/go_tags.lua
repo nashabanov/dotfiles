@@ -1,11 +1,11 @@
 -- nvim --headless -u NONE -i NONE -l nvim/tests/go_tags.lua
 vim.opt.rtp:prepend(vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h:h"))
 dofile(vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h") .. "/helpers/go_context.lua")
-local context = require("go_context")
+local context = require("go-context")
 local tags = {
     read = function(root) return context.tags({ root = root }) end,
     set = function(root, value)
-        return context.set({ tags = require("go_context.context").parse_tags(value) }, { root = root })
+        return context.set({ tags = require("go-context.context").parse_tags(value) }, { root = root })
     end,
     before_init = require("lsp.config").gopls.before_init,
     setup = function()
@@ -56,8 +56,8 @@ local function run()
     tags.setup()
     vim.cmd("GoContext integration smoke")
     assert(vim.deep_equal(tags.read(first), { "integration", "smoke" }))
-    vim.ui.input = function(opts, callback)
-        assert(opts.default == "integration,smoke")
+    require("go-context.ui").input = function(opts, callback)
+        assert(opts.default == "integration, smoke")
         callback(nil)
     end
     vim.cmd("GoContext")

@@ -2,7 +2,7 @@
 local root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h:h")
 vim.opt.rtp:prepend(root)
 dofile(root .. "/tests/helpers/go_context.lua")
-local context = require("go_context")
+local context = require("go-context")
 local go_lint = require("lsp.go_lint")
 local temp = vim.fn.tempname()
 vim.fn.mkdir(temp, "p")

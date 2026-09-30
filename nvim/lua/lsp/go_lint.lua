@@ -1,6 +1,6 @@
 local M = {}
 
-local go_context = require("go_context")
+local go_context = require("go-context")
 
 function M.with_build_tags(linter, root)
     local tags = go_context.tags({
