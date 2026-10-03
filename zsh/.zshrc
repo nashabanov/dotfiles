@@ -2,6 +2,7 @@ typeset -g DOTFILES_ZSH_DIR="${${(%):-%N}:A:h}"
 
 source "$DOTFILES_ZSH_DIR/path.zsh"
 source "$DOTFILES_ZSH_DIR/options.zsh"
+source "$DOTFILES_ZSH_DIR/mise.zsh"
 source "$DOTFILES_ZSH_DIR/completion.zsh"
 source "$DOTFILES_ZSH_DIR/fzf.zsh"
 source "$DOTFILES_ZSH_DIR/plugins.zsh"

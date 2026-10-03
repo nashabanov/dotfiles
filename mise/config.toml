@@ -1,0 +1,10 @@
+[tools]
+ripgrep = "latest"
+fd = "latest"
+fzf = "latest"
+bat = "latest"
+
+stylua = "latest"
+ruff = "latest"
+shellcheck = "latest"
+golangci-lint = "latest"
