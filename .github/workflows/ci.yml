@@ -11,8 +11,6 @@ jobs:
   check:
     runs-on: macos-latest
     timeout-minutes: 15
-    env:
-      GO_CONTEXT_PATH: ${{ runner.temp }}/go-context.nvim
     steps:
       - uses: actions/checkout@v6
 
@@ -28,6 +26,8 @@ jobs:
 
       - name: Install Neovim and test plugin
         run: |
+          export GO_CONTEXT_PATH="$RUNNER_TEMP/go-context.nvim"
+          echo "GO_CONTEXT_PATH=$GO_CONTEXT_PATH" >> "$GITHUB_ENV"
           brew install neovim
           revision=$(python -c 'import json; print(json.load(open("nvim/lazy-lock.json"))["go-context.nvim"]["commit"])')
           git init "$GO_CONTEXT_PATH"
