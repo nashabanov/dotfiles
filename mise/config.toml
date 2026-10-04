@@ -1,15 +1,15 @@
 [tools]
 # Default runtimes; projects can override these versions.
-go = "latest" # doctor: go gofmt
-node = "lts" # doctor: node npm
-python = "3.13" # doctor: python3.13
+go = "1.26"                                        # doctor: go gofmt
+node = "lts"                                       # doctor: node npm
+python = "3.13"                                    # doctor: python3.13
 rust = { version = "stable", profile = "default" } # doctor: rustc cargo rustfmt cargo-clippy
 
 # Developer CLIs: avoid global npm/uv installations.
-uv = "latest" # doctor: uv uvx
+uv = "latest"                  # doctor: uv uvx
 tree-sitter = "0.26.5"
 "npm:@openai/codex" = "latest" # doctor: codex
-"pypi:pre-commit" = "latest" # doctor: pre-commit
+"pypi:pre-commit" = "latest"   # doctor: pre-commit
 
 ripgrep = "latest" # doctor: rg
 fd = "latest"
@@ -23,17 +23,17 @@ golangci-lint = "latest"
 
 # LSP binaries; enabled servers are listed in nvim/lua/lsp/servers.lua.
 # Ruff above is used both as a CLI and a language server.
-"go:golang.org/x/tools/gopls" = "latest" # doctor: gopls
+"go:golang.org/x/tools/gopls" = "latest"           # doctor: gopls
 lua-language-server = "latest"
-"npm:pyright" = "latest" # doctor: pyright-langserver
-"npm:@vtsls/language-server" = "latest" # doctor: vtsls
-"npm:vscode-langservers-extracted" = "latest" # doctor: vscode-eslint-language-server vscode-html-language-server vscode-css-language-server vscode-json-language-server
-"npm:@tailwindcss/language-server" = "latest" # doctor: tailwindcss-language-server
+"npm:pyright" = "latest"                           # doctor: pyright-langserver
+"npm:@vtsls/language-server" = "latest"            # doctor: vtsls
+"npm:vscode-langservers-extracted" = "latest"      # doctor: vscode-eslint-language-server vscode-html-language-server vscode-css-language-server vscode-json-language-server
+"npm:@tailwindcss/language-server" = "latest"      # doctor: tailwindcss-language-server
 rust-analyzer = "latest"
 buf = "latest"
-"github:coder3101/protols" = "latest" # doctor: protols
-"npm:yaml-language-server" = "latest" # doctor: yaml-language-server
+"github:coder3101/protols" = "latest"              # doctor: protols
+"npm:yaml-language-server" = "latest"              # doctor: yaml-language-server
 marksman = "latest"
 "npm:dockerfile-language-server-nodejs" = "latest" # doctor: docker-langserver
-"npm:bash-language-server" = "latest" # doctor: bash-language-server
+"npm:bash-language-server" = "latest"              # doctor: bash-language-server
 taplo = "latest"

@@ -5,31 +5,40 @@ WezTerm uses Geist Mono with Symbols Nerd Font Mono; both fonts are in Brewfile.
 
 ## Install
 
-Requires macOS, Xcode Command Line Tools, Git, Homebrew, Bash and Zsh, plus
-internet access for packages and editor/terminal plugins.
+Requires macOS, Xcode Command Line Tools (including Git and Make), Bash and Zsh,
+plus internet access for packages and editor/terminal plugins. If the Command
+Line Tools are missing, run `xcode-select --install` and finish the installation
+before continuing. Bootstrap installs Homebrew and mise if they are missing.
+
+Back up existing configurations first: the link installer does not create
+backups. Existing symlinks are replaced automatically; replacing ordinary
+files/directories requires confirmation. Keep the repository at its installed
+location because configuration links point into it.
 
 ```sh
 git clone https://github.com/nashabanov/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-make bootstrap
+bash bootstrap.sh
 exec zsh
 ```
 
-Bootstrap installs Brewfile packages, creates configuration links, then installs
-mise tools. Open `nvim` once to install Lazy plugins; WezTerm downloads its
+The script prepares Homebrew and mise, then runs `make bootstrap` to install
+[Brewfile](Brewfile) packages, create configuration links (including the global
+mise configuration), and install tools from [mise/config.toml](mise/config.toml).
+If Homebrew and mise are already available in `PATH`, `make bootstrap` can also
+be run directly. The new Zsh session activates mise automatically.
+
+Open `nvim` once to install Lazy plugins; WezTerm downloads its
 tabline plugin when first loading the configuration. Launch OrbStack once to
 initialize Docker integration.
 
 `make links` (or `bash symlinks.sh`) creates only the links in
-[symlinks.conf](symlinks.conf). Existing symlinks are replaced automatically;
-replacing ordinary files/directories requires confirmation. Back up existing
-configurations first: the script does not create backups. Keep the repository
-at its installed location.
+[symlinks.conf](symlinks.conf).
 
 ## Tools and checks
 
 - [Brewfile](Brewfile): applications, system tools, Zsh plugins and fonts.
-- [mise/config.toml](mise/config.toml): Go, Node LTS, Python 3.13, Rust stable,
+- [mise/config.toml](mise/config.toml): Go 1.26, Node LTS, Python 3.13, Rust stable,
   Tree-sitter, Codex, pre-commit, search tools, formatters, linters and LSPs.
   Project configurations can override runtime versions; Rust uses rustup.
 
@@ -47,6 +56,9 @@ Run checks from a shell with mise activated. Neovim tests need the installed
 `go-context.nvim` plugin. Doctor reports `OK`, `FAIL` and `WARN`; failures return
 a nonzero status. Colors follow the terminal, `NO_COLOR` and `FORCE_COLOR=1`.
 Use `:checkhealth` for Neovim runtime diagnostics.
+
+[CI](.github/workflows/ci.yml) runs `make lint test` on macOS for pushes and pull
+requests, using the `go-context.nvim` revision from `nvim/lazy-lock.json`.
 
 Homebrew cleanup can propose removing packages outside Brewfile and return a
 nonzero status if cleanup is declined, stopping `make update`. Review its list;
