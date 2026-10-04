@@ -13,7 +13,7 @@ success_count=0
 fail_count=0
 
 print_header() {
-    echo -e "${CYAN}=== Dotfiles Installation ===${NC}"
+    echo -e "${CYAN}=== Dotfiles Symlinks ===${NC}"
     echo -e "${GRAY}Repository: $DOTFILES_DIR${NC}"
     echo ""
 }
@@ -75,25 +75,19 @@ create_symlink() {
 }
 
 print_header
-for entry in \
-    "$DOTFILES_DIR/wezterm/.wezterm.lua|$HOME/.wezterm.lua|WezTerm" \
-    "$DOTFILES_DIR/starship/starship.toml|$HOME/.config/starship.toml|Starship" \
-    "$DOTFILES_DIR/nvim|$HOME/.config/nvim|Neovim" \
-    "$DOTFILES_DIR/mise/config.toml|$HOME/.config/mise/config.toml|mise" \
-    "$DOTFILES_DIR/gitui/key_bindings.ron|$HOME/.config/gitui/key_bindings.ron|gitui" \
-    "$DOTFILES_DIR/zsh/.zshrc|$HOME/.zshrc|zsh"; do
-    IFS='|' read -r source target name <<< "$entry"
-    create_symlink "$source" "$target" "$name" || :
-done
+while IFS='|' read -r source target name; do
+    [[ -z "$source" || "$source" == \#* ]] && continue
+    create_symlink "$DOTFILES_DIR/$source" "$HOME/$target" "$name" || :
+done < "$DOTFILES_DIR/symlinks.conf"
 
 echo ""
 echo -e "${CYAN}=== Summary ===${NC}"
 if [[ $fail_count -eq 0 ]]; then
-    print_success "✓ Installation complete: $success_count symlink(s) ready."
+    print_success "✓ Symlinks ready: $success_count symlink(s) ready."
     exit 0
 fi
 
-print_warning "⚠ Installation incomplete"
+print_warning "⚠ Symlinks incomplete"
 print_success "  Success: $success_count symlink(s)"
 print_error "  Failed:  $fail_count symlink(s)"
 exit 1

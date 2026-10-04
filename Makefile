@@ -3,18 +3,21 @@ ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: bootstrap brew-install tools-install links \
         update brew-update tools-update \
-        doctor check
+        doctor lint test check uninstall
 
-bootstrap: brew-install links tools-install 
+bootstrap:
+	$(MAKE) brew-install
+	$(MAKE) links
+	$(MAKE) tools-install
 
 brew-install:
-	brew bundle --file=Brewfile
+	brew bundle --file="$(ROOT)Brewfile"
 
 tools-install:
-	mise install
+	cd "$(ROOT)" && mise install
 
 links:
-	"$(ROOT)./install.sh"
+	"$(ROOT)./symlinks.sh"
 
 update: brew-update tools-update
 
@@ -24,20 +27,24 @@ brew-update:
 	brew bundle cleanup --file="$(ROOT)Brewfile"
 
 tools-update:
-	mise upgrade
+	cd "$(ROOT)" && mise upgrade
 
 doctor:
-	@echo "mise:           $$(command -v mise)"
-	@echo "rg:             $$(command -v rg)"
-	@echo "fd:             $$(command -v fd)"
-	@echo "fzf:            $$(command -v fzf)"
-	@echo "bat:            $$(command -v bat)"
-	@echo "stylua:         $$(command -v stylua)"
-	@echo "ruff:            $$(command -v ruff)"
-	@echo "shellcheck:      $$(command -v shellcheck)"
-	@echo "golangci-lint:   $$(command -v golangci-lint)"
+	@bash "$(ROOT)doctor.sh"
+
+lint:
+	cd "$(ROOT)" && mise exec -- shellcheck *.sh lib/*.sh tests/*.sh
+	cd "$(ROOT)" && mise exec -- ruff check lib/
+	@for file in "$(ROOT)zsh/.zshrc" "$(ROOT)"zsh/*.zsh; do zsh -n "$$file" || exit; done
+
+test:
+	@cd "$(ROOT)" && for file in tests/*.sh; do bash "$$file" || exit; done
+	@cd "$(ROOT)" && for file in nvim/tests/*.lua; do mise exec -- nvim --headless -u NONE -i NONE -l "$$file" || exit; done
 
 check:
 	$(MAKE) doctor
 	$(MAKE) lint
 	$(MAKE) test
+
+uninstall:
+	bash "$(ROOT)uninstall.sh" $(UNINSTALL_FLAGS)

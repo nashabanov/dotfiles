@@ -11,7 +11,6 @@ return {
         require("neo-tree").setup({
             close_if_last_window = true,
             popup_border_style = "rounded",
-            enable_normal_mode_for_inputs = false,
             default_component_configs = {
                 indent = {
                     padding = 1,

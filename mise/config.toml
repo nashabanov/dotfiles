@@ -1,5 +1,16 @@
 [tools]
-ripgrep = "latest"
+# Default runtimes; projects can override these versions.
+go = "latest" # doctor: go gofmt
+node = "lts" # doctor: node npm
+python = "3.13" # doctor: python3.13
+rust = { version = "stable", profile = "default" } # doctor: rustc cargo rustfmt cargo-clippy
+
+# Developer CLIs: avoid global npm/uv installations.
+tree-sitter = "0.26.5"
+"npm:@openai/codex" = "latest" # doctor: codex
+"pypi:pre-commit" = "latest" # doctor: pre-commit
+
+ripgrep = "latest" # doctor: rg
 fd = "latest"
 fzf = "latest"
 bat = "latest"
@@ -11,17 +22,17 @@ golangci-lint = "latest"
 
 # LSP binaries; enabled servers are listed in nvim/lua/lsp/servers.lua.
 # Ruff above is used both as a CLI and a language server.
-"go:golang.org/x/tools/gopls" = "latest"
+"go:golang.org/x/tools/gopls" = "latest" # doctor: gopls
 lua-language-server = "latest"
-"npm:pyright" = "latest"
-"npm:@vtsls/language-server" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@tailwindcss/language-server" = "latest"
+"npm:pyright" = "latest" # doctor: pyright-langserver
+"npm:@vtsls/language-server" = "latest" # doctor: vtsls
+"npm:vscode-langservers-extracted" = "latest" # doctor: vscode-eslint-language-server vscode-html-language-server vscode-css-language-server vscode-json-language-server
+"npm:@tailwindcss/language-server" = "latest" # doctor: tailwindcss-language-server
 rust-analyzer = "latest"
 buf = "latest"
-"github:coder3101/protols" = "latest"
-"npm:yaml-language-server" = "latest"
+"github:coder3101/protols" = "latest" # doctor: protols
+"npm:yaml-language-server" = "latest" # doctor: yaml-language-server
 marksman = "latest"
-"npm:dockerfile-language-server-nodejs" = "latest"
-"npm:bash-language-server" = "latest"
+"npm:dockerfile-language-server-nodejs" = "latest" # doctor: docker-langserver
+"npm:bash-language-server" = "latest" # doctor: bash-language-server
 taplo = "latest"

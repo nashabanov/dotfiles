@@ -1,223 +1,114 @@
-# My Dotfiles
+# Dotfiles
 
-Personal development environment for macOS, including WezTerm, Starship, Neovim, gitui, and Zsh.
+Personal macOS environment: Zsh, WezTerm, Starship, Neovim and gitui.
+WezTerm uses Geist Mono with Symbols Nerd Font Mono; both fonts are in Brewfile.
 
-## Contents
+## Install
 
-- **WezTerm**: terminal configuration with a tabline, pane shortcuts, and a translucent background.
-- **Starship**: shell prompt configuration.
-- **Neovim**: Lazy-managed plugins, completion, LSP support, file navigation, and Git integration.
-- **gitui**: custom key bindings.
-- **Zsh**: history, completion, aliases, optional plugins, and Starship initialization.
-- **Brewfile**: Homebrew packages for the development environment.
-
-## Structure
-
-```text
-dotfiles/
-├── Brewfile
-├── gitui/
-│   └── key_bindings.ron
-├── nvim/
-│   ├── init.lua
-│   ├── lazy-lock.json
-│   ├── lua/
-│   │   ├── core/
-│   │   ├── lsp/
-│   │   └── plugins/
-│   └── tests/
-│       └── format.lua
-├── starship/
-│   └── starship.toml
-├── wezterm/
-│   └── .wezterm.lua
-├── zsh/
-│   ├── .zshrc
-│   ├── aliases.zsh
-│   ├── completion.zsh
-│   ├── env.zsh
-│   ├── fzf.zsh
-│   ├── options.zsh
-│   ├── path.zsh
-│   └── plugins.zsh
-├── install.sh
-└── uninstall.sh
-```
-
-## Requirements
-
-- macOS with Git, Homebrew, Bash, and Zsh.
-- Internet access for installing packages and downloading editor and terminal plugins.
-- Clone the repository into any directory.
-
-The Zsh configuration derives its own location and detects the Homebrew prefix, supporting both Apple Silicon and Intel installations.
-
-## Installation
-
-### Clone and install packages
+Requires macOS, Xcode Command Line Tools, Git, Homebrew, Bash and Zsh, plus
+internet access for packages and editor/terminal plugins.
 
 ```sh
 git clone https://github.com/nashabanov/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-brew bundle --file=Brewfile
+make bootstrap
+exec zsh
 ```
 
-The Brewfile includes:
+Bootstrap installs Brewfile packages, creates configuration links, then installs
+mise tools. Open `nvim` once to install Lazy plugins; WezTerm downloads its
+tabline plugin when first loading the configuration. Launch OrbStack once to
+initialize Docker integration.
 
-- Git, uv, Go, Node.js (including npm for mise-managed language servers), and Python 3.13.
+`make links` (or `bash symlinks.sh`) creates only the links in
+[symlinks.conf](symlinks.conf). Existing symlinks are replaced automatically;
+replacing ordinary files/directories requires confirmation. Back up existing
+configurations first: the script does not create backups. Keep the repository
+at its installed location.
 
-LSP binaries are installed through `mise/config.toml`. Neovim configures and
-enables the servers listed in `nvim/lua/lsp/servers.lua` using executables on PATH.
-- Neovim, gitui, WezTerm, and Starship.
-- eza, fzf, ripgrep, and bat.
-- fzf-tab, zsh-completions, zsh-autosuggestions, and zsh-syntax-highlighting.
-- Geist Mono and Symbols Nerd Font, matching the WezTerm configuration.
+## Tools and checks
 
-The `ls` alias requires `eza`. The other shell integrations load when their commands or files are available. Ripgrep also supports Neovim's Telescope text search.
+- [Brewfile](Brewfile): applications, system tools, Zsh plugins and fonts.
+- [mise/config.toml](mise/config.toml): Go, Node LTS, Python 3.13, Rust stable,
+  Tree-sitter, Codex, pre-commit, search tools, formatters, linters and LSPs.
+  Project configurations can override runtime versions; Rust uses rustup.
 
-WezTerm selects **Geist Mono** with **Symbols Nerd Font Mono** as a fallback. Both are installed by the Brewfile.
-
-### Link configurations
-
-The intended script entry point is:
-
-```sh
-bash install.sh
-```
-
-The installer replaces existing symlinks automatically. For an existing regular file or directory, it asks before deleting and replacing it; it does not create backups. It continues with the remaining links if one target is skipped or fails, then returns a nonzero status.
-
-```sh
-mkdir -p ~/.config/gitui
-ln -s ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
-ln -s ~/dotfiles/starship/starship.toml ~/.config/starship.toml
-ln -s ~/dotfiles/nvim ~/.config/nvim
-ln -s ~/dotfiles/gitui/key_bindings.ron ~/.config/gitui/key_bindings.ron
-ln -s ~/dotfiles/zsh/.zshrc ~/.zshrc
-```
-
-If a target already exists, inspect it before replacing it. The expected links are:
-
-| Installed path | Repository source |
+| Command | Purpose |
 | --- | --- |
-| `~/.wezterm.lua` | `wezterm/.wezterm.lua` |
-| `~/.config/starship.toml` | `starship/starship.toml` |
-| `~/.config/nvim` | `nvim/` |
-| `~/.config/gitui/key_bindings.ron` | `gitui/key_bindings.ron` |
-| `~/.zshrc` | `zsh/.zshrc` |
+| `make doctor` | Check commands, links, packages, Zsh integrations and shell syntax |
+| `make lint` | ShellCheck, Ruff and Zsh syntax checks |
+| `make test` | Shell and Neovim regression tests |
+| `make check` | Doctor, lint and tests |
+| `make tools-update` | Upgrade mise tools |
+| `make brew-update` | Update/upgrade Homebrew packages and offer Brewfile cleanup |
+| `make update` | Run both update targets |
 
-Keep the repository at this location: edits to linked files take effect directly.
+Run checks from a shell with mise activated. Neovim tests need the installed
+`go-context.nvim` plugin. Doctor reports `OK`, `FAIL` and `WARN`; failures return
+a nonzero status. Colors follow the terminal, `NO_COLOR` and `FORCE_COLOR=1`.
+Use `:checkhealth` for Neovim runtime diagnostics.
 
-### Start using the configuration
+Homebrew cleanup can propose removing packages outside Brewfile and return a
+nonzero status if cleanup is declined, stopping `make update`. Review its list;
+`make tools-update` can be run separately. Avoid global npm/uv installations of
+commands already managed by mise.
 
-Open a new Zsh session to load the shell configuration. Run `nvim` to bootstrap Lazy and the configured plugins. WezTerm downloads its tabline plugin when loading its configuration.
+## Neovim
 
-## Neovim key mappings
+Space is the leader key. Main shortcuts:
 
-Both leader keys are Space and are set in `nvim/init.lua` before plugins load.
-General editor mappings live in `lua/core/mappings.lua`, buffer-local LSP
-mappings in `lua/lsp/attach.lua`, and plugin mappings alongside their settings
-in `lua/plugins/`. Every plugin module returns a Lazy specification; setup runs
-through its `opts` or `config` when Lazy loads the plugin. `lua/core/plugins.lua`
-registers these specifications, while `lua/core/ui.lua` owns global transparency
-and diagnostic defaults. Neo-tree highlights and window settings remain in its
-plugin module.
-
-| Keys (normal mode) | Action |
+| Keys | Action |
 | --- | --- |
-| `<leader>1` / `<leader>2` | Previous / next buffer |
-| `<leader>bc` | Close the current buffer (unsaved changes require saving first) |
-| `<leader>e` / `<leader>g` | Focus the file tree / Git status tree |
-| `<leader>ff` | Find files |
-| `<leader>fg` / `<leader>fz` | Search text / fuzzy search text |
-| `<leader>fc` | Search the word under the cursor |
-| `gd` / `gr` / `gy` | Definition / references / type definition (LSP) |
-| `gi` / `go` | Incoming / outgoing calls (LSP) |
-| `K` | Hover documentation (LSP) |
-| `<leader>ca` / `<leader>rn` | Code action / rename symbol (LSP) |
-| `<leader>D` / `<leader>ih` | Line diagnostics / toggle buffer inlay hints (LSP) |
-| `]h` / `[h` | Next / previous Git hunk |
-| `<leader>hs` | Stage/unstage the Git hunk under the cursor |
-| `<leader>hp` / `<leader>hi` | Preview the current Git hunk in a popup / inline |
-| `<leader>?` | Show buffer-local mappings with WhichKey |
+| `<leader>1` / `<leader>2` / `<leader>bc` | Previous / next / close buffer |
+| `<leader>e` / `<leader>g` | File tree / Git status tree |
+| `<leader>ff` / `<leader>fg` / `<leader>fz` | Find files / search text / fuzzy search |
+| `gd` / `gr` / `gy` / `K` | Definition / references / type definition / hover |
+| `<leader>ca` / `<leader>rn` | Code action / rename |
+| `<leader>D` / `<leader>ih` | Line diagnostics / toggle inlay hints |
+| `]h` / `[h` / `<leader>hs` | Next / previous / stage or unstage Git hunk |
+| `<leader>hp` / `<leader>hi` / `<leader>?` | Hunk popup / inline preview / local mappings |
 
-File search uses `<leader>f` prefixes so the built-in `f{char}` motion remains
-available. Cinnamon owns the smooth navigation mappings (`n`, `N`, `zz`, `zt`,
-`zb`, `gg`, and `G`). Completion and dashboard shortcuts stay in their respective
-plugin configurations.
+LSP servers are listed in [servers.lua](nvim/lua/lsp/servers.lua).
+Format-on-save uses Ruff for Python, lua_ls for Lua, gopls for Go and
+rust-analyzer for Rust. Formatting failures do not block saving.
+`:FormatOnSaveToggle` toggles formatting for the current buffer.
 
-Gitsigns uses `nav_hunk` for navigation and `stage_hunk` for staging and unstaging.
-On a staged hunk with no unstaged changes at the cursor, `<leader>hs` unstages it;
-when unstaged changes are present there, it stages those changes first. The old
-`<leader>hu` (undo the last staging action) has been removed. `<leader>hi` opens
-an inline preview of the current hunk; it replaces the old `<leader>td` shortcut
-for showing deleted lines throughout the buffer.
+## Maintain inventories
 
-## Neovim format on save
+Edit [symlinks.conf](symlinks.conf) once to update the link installer, doctor and
+uninstaller. Each row is `repository source|path relative to HOME|display name`.
 
-Saving a regular, writable buffer formats it through one attached LSP server
-that supports document formatting. Python uses Ruff, Lua uses lua_ls, Go uses
-gopls, and Rust uses rust-analyzer. If the preferred server is unavailable,
-formatting is skipped. Other file types use the first capable server by name
-(then client ID), so attachment order does not change the choice.
+Doctor derives commands from Brewfile and mise. For different executable names
+or multiple commands, annotate the package declaration:
 
-Formatting completes before the file is written, with a 1,000 ms request timeout.
-A timeout or formatter error reports a warning and allows saving to continue.
-Buffers without a matching formatter are skipped silently.
-
-Run `:FormatOnSaveToggle` to disable or re-enable automatic formatting for the
-current buffer. This does not affect other buffers and resets when the buffer is
-deleted. For configuration or project hooks, set `vim.b.autoformat = false`.
-
-Run the formatting regression checks from the repository root:
-
-```sh
-nvim --headless -u NONE -i NONE -l nvim/tests/format.lua
+```toml
+ripgrep = "latest" # doctor: rg
+node = "lts" # doctor: node npm
 ```
 
-The checks use temporary files and simulated LSP clients, including Neovim's
-synchronous request timeout and cancellation, without installing plugins.
+Backend-qualified mise tools require `# doctor:`; `# doctor: -` means no CLI.
+Brewfile also supports `# doctor-file:` for files relative to the Homebrew prefix
+and `# doctor-app:` for app executables under `/Applications` or
+`~/Applications`. See existing declarations for examples.
+The inventory parser requires a real Python >=3.11 executable; it skips mise
+shims to avoid triggering installations while reading inventories.
 
-To validate completion, Gitsigns, and Treesitter configuration without
-installing plugins:
-
-```sh
-nvim --headless -u NONE -i NONE -l nvim/tests/plugins.lua
-```
-
-## Verify links
-
-Run the following in Zsh or Bash and compare the destinations with the table above:
+## Uninstall
 
 ```sh
-for target in ~/.wezterm.lua ~/.config/starship.toml ~/.config/nvim ~/.config/gitui/key_bindings.ron ~/.zshrc; do
-  if [ -L "$target" ]; then
-    printf '%s -> %s\n' "$target" "$(readlink "$target")"
-  else
-    printf 'Missing symlink: %s\n' "$target"
-  fi
-done
+bash uninstall.sh --dry-run     # Preview the removal plan
+bash uninstall.sh              # Apply after confirmation
+bash uninstall.sh --links-only # Remove only managed configuration links
+bash uninstall.sh --purge-data # Also delete application data
 ```
 
-## Uninstallation
+Default cleanup removes all versions of mise tools declared here, installed
+Brewfile packages/apps/fonts, managed links and Neovim/Starship caches. These
+tools may also be used by other projects. `--purge-data` additionally deletes
+Neovim data/state, WezTerm plugin data and cask data via `--zap`, potentially
+including **OrbStack VMs and containers**. Back up needed data first.
 
-```sh
-cd ~/dotfiles
-bash uninstall.sh
-```
-
-The script asks for confirmation and removes only symlinks whose destinations match this repository. It preserves regular files, directories, foreign symlinks, and broken symlinks that do not point to a managed source.
-
-To remove the links manually, including broken links, while checking that they point to this repository:
-
-```sh
-for target in ~/.wezterm.lua ~/.config/starship.toml ~/.config/nvim ~/.config/gitui/key_bindings.ron ~/.zshrc; do
-  if [ -L "$target" ]; then
-    case "$(readlink "$target")" in
-      "$HOME/dotfiles/"*) rm "$target" ;;
-    esac
-  fi
-done
-```
-
-Repository files and installed packages remain in place. Restore any previous configurations from your backups.
+`--yes` skips confirmation. Invalid cleanup paths are rejected; failed removal
+stops later stages without rolling back completed steps. Homebrew dependency
+checks remain enabled. Repository files, Homebrew, foreign configurations and
+unmanaged installations are preserved.
