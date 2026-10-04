@@ -1,6 +1,3 @@
-# Runtime installer (language runtimes are managed by mise)
-brew "uv"
-
 # Editor
 brew "neovim" # doctor: nvim
 brew "gitui"

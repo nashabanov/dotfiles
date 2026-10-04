@@ -10,7 +10,7 @@ cat > "$fixture/bin/brew" <<'STUB'
 case "$*" in
     'list --formula') printf 'git\nmise\nuv\nunrelated\n' ;;
     'list --cask') printf 'wezterm\norbstack\nunrelated-app\n' ;;
-    'bundle list --formula '*) printf 'git\nmise\nuv\n' ;;
+    'bundle list --formula '*) printf 'git\nmise\n' ;;
     'bundle list --cask '*) printf 'wezterm\norbstack\n' ;;
     uninstall*) printf 'brew %s\n' "$*" >> "$CLEANUP_LOG"; [[ "${FAIL_BREW:-0}" != 1 ]] ;;
     *) exit 2 ;;
@@ -35,7 +35,8 @@ bash "$ROOT/uninstall.sh" --yes >/dev/null
 [[ ! -L "$HOME/.config/mise/config.toml" && ! -L "$HOME/.zshrc" ]]
 [[ ! -d "$HOME/.cache/nvim" && -e "$HOME/.local/share/nvim/undo" ]]
 rg -q 'uninstall --all .*go.*node.*python.*rust' "$CLEANUP_LOG"
-rg -q 'brew uninstall --formula git mise uv' "$CLEANUP_LOG"
+rg -q 'uninstall --all .*uv' "$CLEANUP_LOG"
+rg -q '^brew uninstall --formula git mise$' "$CLEANUP_LOG"
 if rg -q 'unrelated|--zap|--ignore-dependencies' "$CLEANUP_LOG"; then exit 1; fi
 [[ "$(head -1 "$CLEANUP_LOG")" == mise* ]]
 bash "$ROOT/symlinks.sh" >/dev/null
@@ -76,4 +77,3 @@ ln -s "$fixture/safety" "$fixture/xdg-alias"
 if XDG_DATA_HOME="$fixture/xdg-alias" bash "$safety/uninstall.sh" --yes --purge-data >/dev/null 2>&1; then exit 1; fi
 [[ -e "$safety/uninstall.sh" && ! -s "$CLEANUP_LOG" ]]
 echo 'PASS: uninstall stops on failures and protects repository/HOME ancestors'
-

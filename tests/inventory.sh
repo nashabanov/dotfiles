@@ -12,9 +12,12 @@ source "$ROOT/lib/common.sh"
 printf '\nfresh-cli = "latest"\n"npm:example" = "latest" # doctor: example-server\n' >> "$fixture/repo/mise/config.toml"
 printf '\nbrew "fresh-brew"\nbrew "renamed" # doctor: actual-command\n' >> "$fixture/repo/Brewfile"
 commands="$(inventory "$fixture/repo" mise-binaries)"
+[[ $'\n'"$commands"$'\n' == *$'\n'uv$'\n'* ]]
+[[ $'\n'"$commands"$'\n' == *$'\n'uvx$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'fresh-cli$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'example-server$'\n'* ]]
 commands="$(inventory "$fixture/repo" brew-binaries)"
+[[ $'\n'"$commands"$'\n' != *$'\n'uv$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'fresh-brew$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'actual-command$'\n'* ]]
 # A new link needs only one manifest edit for install, doctor and uninstall.

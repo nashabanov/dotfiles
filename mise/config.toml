@@ -6,6 +6,7 @@ python = "3.13" # doctor: python3.13
 rust = { version = "stable", profile = "default" } # doctor: rustc cargo rustfmt cargo-clippy
 
 # Developer CLIs: avoid global npm/uv installations.
+uv = "latest" # doctor: uv uvx
 tree-sitter = "0.26.5"
 "npm:@openai/codex" = "latest" # doctor: codex
 "pypi:pre-commit" = "latest" # doctor: pre-commit
