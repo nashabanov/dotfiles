@@ -75,10 +75,11 @@ create_symlink() {
 }
 
 print_header
-while IFS='|' read -r source target name; do
+# Keep stdin available for replacement confirmations.
+while IFS='|' read -r source target name <&3; do
     [[ -z "$source" || "$source" == \#* ]] && continue
     create_symlink "$DOTFILES_DIR/$source" "$HOME/$target" "$name" || :
-done < "$DOTFILES_DIR/symlinks.conf"
+done 3< "$DOTFILES_DIR/symlinks.conf"
 
 echo ""
 echo -e "${CYAN}=== Summary ===${NC}"

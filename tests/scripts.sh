@@ -31,4 +31,15 @@ printf 'existing configuration\n' > "$other_home/.zshrc"
 if printf 'n\n' | HOME="$other_home" bash "$ROOT/symlinks.sh" >/dev/null 2>&1; then exit 1; fi
 [[ "$(<"$other_home/.zshrc")" == "existing configuration" ]]
 
+rm "$other_home/.wezterm.lua"
+printf 'existing terminal configuration\n' > "$other_home/.wezterm.lua"
+if printf 'n\n' | HOME="$other_home" bash "$ROOT/symlinks.sh" >/dev/null 2>&1; then exit 1; fi
+[[ "$(<"$other_home/.wezterm.lua")" == "existing terminal configuration" ]]
+assert_link "$other_home/.config/starship.toml" "$ROOT/starship/starship.toml"
+
+printf 'y\ny\n' | HOME="$other_home" bash "$ROOT/symlinks.sh" >/dev/null
+assert_link "$other_home/.wezterm.lua" "$ROOT/wezterm/.wezterm.lua"
+assert_link "$other_home/.zshrc" "$ROOT/zsh/.zshrc"
+assert_link "$other_home/.config/starship.toml" "$ROOT/starship/starship.toml"
+
 echo "PASS: installation is repeatable and uninstallation preserves foreign symlinks"
