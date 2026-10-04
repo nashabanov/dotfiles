@@ -11,31 +11,67 @@ MISE_DECLARATION = re.compile(r'^\s*("[^"]+"|[\w-]+)\s*=.*?# doctor:\s*(.+)$')
 BREW_DECLARATION = re.compile(r'^\s*(brew|cask)\s+"([^"]+)"(.*)$')
 
 
+def mise_config_paths(root: Path) -> list[Path]:
+    """Return mise config files managed by this repository."""
+    base = root / "mise"
+    paths = [base / "config.toml"]
+    conf_d = base / "config.d"
+
+    if conf_d.is_dir():
+        paths.extend(
+            path
+            for path in sorted(conf_d.glob("*.toml"))
+            if not path.name.startswith(".")
+        )
+
+    return paths
+
+
 def mise_inventory(root: Path, mode: str) -> list[str]:
     """Read TOML tool names and command overrides from adjacent comments."""
-    text = (root / "mise/config.toml").read_text(encoding="utf-8")
-    tools = tomllib.loads(text).get("tools", {})
-    if not isinstance(tools, dict):
-        raise TypeError("mise/config.toml: tools must be a table")
-    if mode == "mise-tools":
-        return list(tools)
-
+    tools: list[str] = []
+    seen_tools: set[str] = set()
     overrides: dict[str, list[str]] = {}
-    for line in text.splitlines():
-        match = MISE_DECLARATION.match(line)
-        if match:
-            overrides[match[1].strip('"')] = match[2].split()
+
+    for path in mise_config_paths(root):
+        text = path.read_text(encoding="utf-8")
+        data = tomllib.loads(text)
+
+        declared_tools = data.get("tools", {})
+        if not isinstance(declared_tools, dict):
+            raise TypeError(f"{path.relative_to(root)}: tools must be a table")
+
+        for tool in declared_tools:
+            if tool in seen_tools:
+                raise ValueError(
+                    f"{tool} is declared more than once in mise configuration"
+                )
+
+            seen_tools.add(tool)
+            tools.append(tool)
+
+        for line in text.splitlines():
+            match = MISE_DECLARATION.match(line)
+            if match:
+                tool = match[1].strip('"')
+                overrides[tool] = match[2].split()
+
+    if mode == "mise-tools":
+        return tools
 
     binaries: list[str] = []
     for tool in tools:
         commands = overrides.get(tool)
+
         if commands is None:
             if ":" in tool:
                 raise ValueError(
                     f"Add # doctor: <commands> to the declaration of {tool}"
                 )
             commands = [tool]
+
         binaries.extend(command for command in commands if command != "-")
+
     return binaries
 
 
@@ -45,8 +81,10 @@ def brew_inventory(root: Path, mode: str) -> list[str]:
     text = (root / "Brewfile").read_text(encoding="utf-8")
     for line in text.splitlines():
         declaration = BREW_DECLARATION.match(line)
+
         if declaration is None:
             continue
+
         kind, package, suffix = declaration.groups()
         files = re.search(r"# doctor-file:\s*(.+)", suffix)
         commands = re.search(r"# doctor:\s*(.+)", suffix)
@@ -54,13 +92,17 @@ def brew_inventory(root: Path, mode: str) -> list[str]:
         if mode == "brew-apps":
             if apps:
                 entries.append(apps[1])
+
         elif mode == "brew-files":
             if files:
                 entries.extend(files[1].split())
+
         elif commands:
             entries.extend(command for command in commands[1].split() if command != "-")
+
         elif kind == "brew" and files is None:
             entries.append(package.rsplit("/", 1)[-1])
+
     return entries
 
 
