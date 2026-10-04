@@ -1,39 +1,32 @@
-# Development tools and runtimes
+# Runtimes
 brew "uv"
 brew "go"
-brew "node" # npm-based language servers installed by Mason
+brew "node"
 brew "python@3.13"
 
-# Editor and Git UI
+# Editor
 brew "neovim"
-brew "tree-sitter" # CLI for compiling Neovim parsers (also requires a C compiler)
+brew "tree-sitter"
 brew "gitui"
 
-# Shell prompt, navigation, search, and previews
+# Shell/UI
 brew "starship"
 brew "eza"
-brew "ripgrep"
-brew "bat"
 
-# Zsh completion and plugins
+# Zsh
 brew "fzf-tab"
 brew "zsh-completions"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
-# Terminal and fonts used by wezterm/.wezterm.lua
-cask "wezterm"
-cask "font-geist-mono"
-cask "font-symbols-only-nerd-font"
-
-# Package/tool managers
+# Infrastructure
 brew "mise"
-
-# Core system/dev utilities
 brew "git"
 
-# Tools that must stay under Homebrew
+# External tools
 brew "opencode"
 
 # Applications
 cask "wezterm"
+cask "font-geist-mono"
+cask "font-symbols-only-nerd-font"

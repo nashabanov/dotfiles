@@ -1,10 +1,11 @@
 SHELL := /bin/bash
+ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: bootstrap brew-install tools-install links \
         update brew-update tools-update \
         doctor check
 
-bootstrap: brew-install tools-install links
+bootstrap: brew-install links tools-install 
 
 brew-install:
 	brew bundle --file=Brewfile
@@ -13,14 +14,14 @@ tools-install:
 	mise install
 
 links:
-	./install.sh
+	"$(ROOT)./install.sh"
 
 update: brew-update tools-update
 
 brew-update:
 	brew update
 	brew upgrade
-	brew bundle cleanup --file=Brewfile
+	brew bundle cleanup --file="$(ROOT)Brewfile"
 
 tools-update:
 	mise upgrade
