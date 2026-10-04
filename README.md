@@ -64,7 +64,10 @@ brew bundle --file=Brewfile
 
 The Brewfile includes:
 
-- Git, uv, Go, Node.js (including npm for Mason-managed language servers), and Python 3.13.
+- Git, uv, Go, Node.js (including npm for mise-managed language servers), and Python 3.13.
+
+LSP binaries are installed through `mise/config.toml`. Neovim configures and
+enables the servers listed in `nvim/lua/lsp/servers.lua` using executables on PATH.
 - Neovim, gitui, WezTerm, and Starship.
 - eza, fzf, ripgrep, and bat.
 - fzf-tab, zsh-completions, zsh-autosuggestions, and zsh-syntax-highlighting.

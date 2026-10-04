@@ -3,7 +3,6 @@
 local root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h:h")
 vim.opt.rtp:prepend(root)
 local ruff = vim.env.RUFF_BIN or vim.fn.exepath("ruff")
-if ruff == "" then ruff = vim.fn.stdpath("data") .. "/mason/bin/ruff" end
 assert(vim.fn.executable(ruff) == 1, "Install Ruff or set RUFF_BIN")
 dofile(root .. "/tests/helpers/go_context.lua")
 local configs = require("lsp.config")
@@ -50,7 +49,8 @@ local function run()
         assert(vim.wait(10000, function()
             local client = vim.lsp.get_client_by_id(id)
             return client and client.initialized and vim.lsp.buf_is_attached(buf, id)
-        end, 20), "Ruff failed to initialize")
+                and client:supports_method("textDocument/formatting", buf)
+        end, 20), "Ruff failed to register formatting support")
         -- Compare real LSP formatting with the CLI in this project.
         local cli = vim.system({ ruff, "format", "--stdin-filename", project .. "/main.py", "-" }, {
             cwd = project, stdin = 'value="hello"\n', text = true,

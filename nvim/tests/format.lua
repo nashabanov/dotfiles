@@ -7,8 +7,12 @@ local clients, calls, notifications = {}, {}, {}
 local original_get_clients, original_notify, original_notify_once = vim.lsp.get_clients, vim.notify, vim.notify_once
 local temp_dir = vim.fn.tempname()
 vim.fn.mkdir(temp_dir, "p")
-
-vim.notify = function(message) notifications[#notifications + 1] = message end
+-- Count formatter warnings, independently of Neovim's own logging warnings.
+vim.notify = function(message)
+    if message:match("^%[Format%]") or message:match("^Multiple LSP formatters") then
+        notifications[#notifications + 1] = message
+    end
+end
 vim.notify_once = vim.notify
 vim.lsp.get_clients = function(filter)
     assert(filter.method == "textDocument/formatting")
@@ -142,7 +146,9 @@ local function run()
     local started = vim.uv.hrtime()
     save("raw")
     local elapsed_ms = (vim.uv.hrtime() - started) / 1e6
-    vim.wait(50, function() return #notifications > 0 end)
+    assert(vim.wait(1000, function()
+        return vim.tbl_contains(notifications, "[Format][slow] timeout")
+    end), "Timeout warning must arrive before the next scenario")
     assert(cancelled and elapsed_ms >= 900 and elapsed_ms < 2500, "Timeout must cancel the request in about one second")
     assert(#notifications == 1)
 
@@ -152,7 +158,9 @@ local function run()
         return { result = {} }
     end) }
     save("newer content")
-    vim.wait(50, function() return #notifications > 0 end)
+    assert(vim.wait(1000, function()
+        return vim.tbl_contains(notifications, "[Format][changed] Buffer changed while formatting; edits skipped")
+    end), "Stale edit warning missing")
     assert(#notifications == 1, "Stale edits must be rejected")
 
     -- A non-current target must use its own URI and formatting options.

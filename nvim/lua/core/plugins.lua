@@ -16,8 +16,6 @@ require("lazy").setup({
     require("plugins.treesitter"),
     require("plugins.treesitter-modules"),
     require("plugins.lazydev"),
-    require("plugins.mason"),
-    require("plugins.mason-lspconfig"),
     require("plugins.lsp"),
     require("plugins.lint"),
     require("plugins.cmp"),
