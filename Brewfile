@@ -1,5 +1,4 @@
 # Development tools and runtimes
-brew "git"
 brew "uv"
 brew "go"
 brew "node" # npm-based language servers installed by Mason
@@ -13,7 +12,6 @@ brew "gitui"
 # Shell prompt, navigation, search, and previews
 brew "starship"
 brew "eza"
-brew "fzf"
 brew "ripgrep"
 brew "bat"
 
@@ -27,3 +25,15 @@ brew "zsh-syntax-highlighting"
 cask "wezterm"
 cask "font-geist-mono"
 cask "font-symbols-only-nerd-font"
+
+# Package/tool managers
+brew "mise"
+
+# Core system/dev utilities
+brew "git"
+
+# Tools that must stay under Homebrew
+brew "opencode"
+
+# Applications
+cask "wezterm"

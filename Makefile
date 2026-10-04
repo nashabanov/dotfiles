@@ -1,14 +1,29 @@
-.PHONY: bootstrap tools-update check doctor
+SHELL := /bin/bash
 
-bootstrap:
+.PHONY: bootstrap brew-install tools-install links \
+        update brew-update tools-update \
+        doctor check
+
+bootstrap: brew-install tools-install links
+
+brew-install:
+	brew bundle --file=Brewfile
+
+tools-install:
 	mise install
+
+links:
+	./install.sh
+
+update: brew-update tools-update
+
+brew-update:
+	brew update
+	brew upgrade
+	brew bundle cleanup --file=Brewfile
 
 tools-update:
 	mise upgrade
-
-check:
-	$(MAKE) lint
-	$(MAKE) test
 
 doctor:
 	@echo "mise:           $$(command -v mise)"
@@ -20,3 +35,8 @@ doctor:
 	@echo "ruff:            $$(command -v ruff)"
 	@echo "shellcheck:      $$(command -v shellcheck)"
 	@echo "golangci-lint:   $$(command -v golangci-lint)"
+
+check:
+	$(MAKE) doctor
+	$(MAKE) lint
+	$(MAKE) test

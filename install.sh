@@ -79,6 +79,7 @@ for entry in \
     "$DOTFILES_DIR/wezterm/.wezterm.lua|$HOME/.wezterm.lua|WezTerm" \
     "$DOTFILES_DIR/starship/starship.toml|$HOME/.config/starship.toml|Starship" \
     "$DOTFILES_DIR/nvim|$HOME/.config/nvim|Neovim" \
+    "$DOTFILES_DIR/mise/config.toml|$HOME/.config/mise/config.toml|mise" \
     "$DOTFILES_DIR/gitui/key_bindings.ron|$HOME/.config/gitui/key_bindings.ron|gitui" \
     "$DOTFILES_DIR/zsh/.zshrc|$HOME/.zshrc|zsh"; do
     IFS='|' read -r source target name <<< "$entry"
