@@ -1,3 +1,7 @@
+if [[ -d "$DOTFILES_ZSH_DIR/completions" ]]; then
+  fpath=("$DOTFILES_ZSH_DIR/completions" $fpath)
+fi
+
 if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
   if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
     fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)

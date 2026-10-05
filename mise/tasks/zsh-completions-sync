@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Generate Zsh completions for mise-managed CLI tools"
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+OUT="$ROOT/zsh/completions"
+
+mkdir -p "$OUT"
+
+bat --completion zsh > "$OUT/_bat"
+fd --gen-completions zsh > "$OUT/_fd"
+rg --generate complete-zsh > "$OUT/_rg"

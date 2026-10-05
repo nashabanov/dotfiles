@@ -3,7 +3,8 @@ ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: bootstrap brew-install tools-install links \
         update brew-update tools-update \
-        doctor lint test check uninstall
+        doctor lint test check uninstall \
+		zsh-completions
 
 bootstrap:
 	$(MAKE) brew-install
@@ -15,6 +16,7 @@ brew-install:
 
 tools-install:
 	cd "$(ROOT)" && mise install
+	$(MAKE) zsh-completions
 
 links:
 	"$(ROOT)./symlinks.sh"
@@ -28,6 +30,7 @@ brew-update:
 
 tools-update:
 	cd "$(ROOT)" && mise upgrade
+	$(MAKE) zsh-completions
 
 doctor:
 	@bash "$(ROOT)doctor.sh"
@@ -42,6 +45,9 @@ lint:
 test:
 	@cd "$(ROOT)" && for file in tests/*.sh; do bash "$$file" || exit; done
 	@cd "$(ROOT)" && for file in nvim/tests/*.lua; do mise exec -- nvim --headless -u NONE -i NONE -l "$$file" || exit; done
+
+zsh-completions:
+	cd "$(ROOT)" && mise run zsh-completions-sync
 
 check:
 	$(MAKE) doctor
