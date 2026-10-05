@@ -1,0 +1,5 @@
+std = "neovim"
+
+[lints]
+# Lazy.nvim plugin specs and key mappings intentionally mix array and named fields.
+mixed_table = "allow"

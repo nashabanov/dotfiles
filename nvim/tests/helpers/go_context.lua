@@ -5,6 +5,8 @@ vim.opt.rtp:prepend(plugin)
 local state = vim.fn.tempname()
 vim.env.XDG_STATE_HOME = state
 vim.api.nvim_create_autocmd("VimLeavePre", {
-    once = true,
-    callback = function() vim.fn.delete(state, "rf") end,
+	once = true,
+	callback = function()
+		vim.fn.delete(state, "rf")
+	end,
 })

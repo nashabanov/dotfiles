@@ -1,0 +1,16 @@
+# Neovim exposes a dynamic Lua API through the vim global.
+base: lua51
+globals:
+  vim:
+    property: new-fields
+  vim.*:
+    any: true
+  assert:
+    args:
+      - type: any
+      - type: string
+        required: false
+  io.stderr.write:
+    method: true
+    args:
+      - type: string

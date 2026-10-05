@@ -35,6 +35,8 @@ doctor:
 lint:
 	cd "$(ROOT)" && mise exec -- shellcheck *.sh lib/*.sh tests/*.sh
 	cd "$(ROOT)" && mise exec -- ruff check lib/
+	cd "$(ROOT)" && mise exec -- stylua --check nvim
+	cd "$(ROOT)" && mise exec -- selene nvim
 	@for file in "$(ROOT)zsh/.zshrc" "$(ROOT)"zsh/*.zsh; do zsh -n "$$file" || exit; done
 
 test:

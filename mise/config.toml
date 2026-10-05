@@ -16,6 +16,7 @@ fd = "latest"
 fzf = "latest"
 bat = "latest"
 
+"github:Kampfkarren/selene" = "latest" # doctor: selene
 stylua = "latest"
 ruff = "latest"
 shellcheck = "latest"

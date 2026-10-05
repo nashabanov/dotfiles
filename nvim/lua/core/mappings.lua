@@ -1,5 +1,5 @@
 local function map(key, command, desc)
-    vim.keymap.set("n", key, command, { silent = true, desc = desc })
+	vim.keymap.set("n", key, command, { silent = true, desc = desc })
 end
 
 -- Buffer navigation uses built-in commands.
