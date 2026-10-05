@@ -3,10 +3,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/repo/mise" "$fixture/home"
+mkdir -p "$fixture/repo/mise/conf.d" "$fixture/home"
 cp "$ROOT/Brewfile" "$ROOT/symlinks.conf" "$ROOT/symlinks.sh" "$ROOT/doctor.sh" "$ROOT/uninstall.sh" "$fixture/repo/"
 cp -R "$ROOT/lib" "$fixture/repo/"
 cp "$ROOT/mise/config.toml" "$fixture/repo/mise/"
+printf '[tools]\n"npm:editor-fixture" = "latest" # doctor: editor-fixture-server\n' > "$fixture/repo/mise/conf.d/nvim.toml"
 # shellcheck source=lib/common.sh
 source "$ROOT/lib/common.sh"
 printf '\nfresh-cli = "latest"\n"npm:example" = "latest" # doctor: example-server\n' >> "$fixture/repo/mise/config.toml"
@@ -16,6 +17,10 @@ commands="$(inventory "$fixture/repo" mise-binaries)"
 [[ $'\n'"$commands"$'\n' == *$'\n'uvx$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'fresh-cli$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'example-server$'\n'* ]]
+[[ $'\n'"$commands"$'\n' == *$'\n'editor-fixture-server$'\n'* ]]
+tools="$(inventory "$fixture/repo" mise-tools)"
+[[ $'\n'"$tools"$'\n' == *$'\n'fresh-cli$'\n'* ]]
+[[ $'\n'"$tools"$'\n' == *$'\n'npm:editor-fixture$'\n'* ]]
 commands="$(inventory "$fixture/repo" brew-binaries)"
 [[ $'\n'"$commands"$'\n' != *$'\n'uv$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'fresh-brew$'\n'* ]]
@@ -30,6 +35,7 @@ while IFS='|' read -r source _target _name; do
 done < "$fixture/repo/symlinks.conf"
 HOME="$fixture/home" bash "$fixture/repo/symlinks.sh" >/dev/null
 [[ -L "$fixture/home/.extra" ]]
+[[ -L "$fixture/home/.config/git/config" && -L "$fixture/home/.config/git/ignore" ]]
 output="$(HOME="$fixture/home" bash "$fixture/repo/doctor.sh" 2>&1)" || :
 [[ "$output" == *"$fixture/home/.extra"* && "$output" == *fresh-cli* && "$output" == *actual-command* ]]
 HOME="$fixture/home" bash "$fixture/repo/uninstall.sh" --links-only --yes >/dev/null
@@ -37,4 +43,12 @@ HOME="$fixture/home" bash "$fixture/repo/uninstall.sh" --links-only --yes >/dev/
 printf '\n[tools.table-cli]\nversion = "latest"\n' >> "$fixture/repo/mise/config.toml"
 tools="$(inventory "$fixture/repo" mise-tools)"
 [[ "$tools" == *table-cli* && "$tools" != *$'\n'version* ]]
-echo 'PASS: inventories follow manifest edits, renamed commands and TOML tables'
+printf 'fresh-cli = "latest"\n' >> "$fixture/repo/mise/conf.d/nvim.toml"
+for mode in mise-tools mise-binaries; do
+    if output="$(inventory "$fixture/repo" "$mode" 2>&1)"; then
+        echo "FAIL: duplicate mise tool accepted by $mode" >&2
+        exit 1
+    fi
+    [[ "$output" == *"fresh-cli is declared more than once"* ]]
+done
+echo 'PASS: inventories follow manifests, conf.d, renamed commands and TOML tables; reject duplicates'

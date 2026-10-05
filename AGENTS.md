@@ -8,12 +8,12 @@ through symlinks. Edit the sources rather than installed copies.
 
 Each explicitly managed tool must have one owner responsible for installation,
 version selection, updates, and removal. First inspect `Brewfile`,
-`mise/config.toml`, `mise/config.d/*.toml`, and the relevant application configuration.
+`mise/config.toml`, `mise/conf.d/*.toml`, and the relevant application configuration.
 
 | Owner | Responsibility | Source of truth |
 | --- | --- | --- |
 | Homebrew | Applications, fonts, Zsh plugins, system and infrastructure utilities, and mise itself | `Brewfile` |
-| mise | Go, Node, Python, Rust; developer CLIs, formatters, linters, and LSP servers | `mise/config.toml`, `mise/config.d/*.toml` |
+| mise | Go, Node, Python, Rust; developer CLIs, formatters, linters, and LSP servers | `mise/config.toml`, `mise/conf.d/*.toml` |
 | rustup through mise | Rust toolchain and its components: rustc, cargo, rustfmt, clippy | The `rust` declaration in mise |
 | Lazy.nvim | Neovim plugins and their versions | `nvim/lua/core/plugins.lua`, `nvim/lua/plugins/*.lua`, `nvim/lazy-lock.json` |
 | Application plugins | Application resources: Tree-sitter parsers, WezTerm tabline, and similar internal dependencies | The relevant plugin configuration |
@@ -22,7 +22,7 @@ version selection, updates, and removal. First inspect `Brewfile`,
 ### Selection and boundaries
 
 - Preserve the existing owner. For example, `neovim`, `gitui`, `starship`,
-  `eza`, `gh`, `lefthook`, `luacheck`, and `opencode` belong to Homebrew;
+  `eza`, `gh`, `lefthook`, and `opencode` belong to Homebrew;
   `ripgrep`, `fd`, `fzf`, `bat`, `uv`, `ruff`, `stylua`, `shellcheck`,
   `golangci-lint`, Codex, and pre-commit belong to mise. Consult the manifests
   for the current inventory.
@@ -42,7 +42,7 @@ version selection, updates, and removal. First inspect `Brewfile`,
   second permanent global installation of an already managed command.
 - mise installs LSP servers; Neovim configures and runs them. Do not add Mason
   or automatic installation of external CLIs from Neovim. LSP declarations
-  live in `mise/config.d/nvim.toml`; the server list is in
+  live in `mise/conf.d/nvim.toml`; the server list is in
   `nvim/lua/lsp/servers.lua`. Ruff serves as both a CLI and an LSP server;
   it does not need a separate editor installation.
 - The mise declaration manages the Rust toolchain through rustup. Do not add
@@ -75,7 +75,7 @@ within the scope of the requested task.
   removal. Each row is `repository source|path relative to HOME|display name`.
   Add new links here without duplicating inventories in scripts.
 - `lib/inventory.py` reads Brewfile and mise configurations, including
-  `config.d/*.toml`. Do not duplicate a tool key across mise files.
+  `conf.d/*.toml`. Do not duplicate a tool key across mise files.
 - For backend-qualified tools and tools with different executable names, add
   `# doctor: <commands>` beside the declaration. `# doctor: -` means no CLI.
   In Brewfile, use `# doctor-file:` for paths relative to the Homebrew prefix
@@ -92,7 +92,7 @@ within the scope of the requested task.
 
 Use Makefile targets from the repository root:
 
-- `make lint` — ShellCheck, Ruff, and Zsh syntax checks.
+- `make lint` — ShellCheck, Ruff, StyLua, Selene, and Zsh syntax checks.
 - `make test` — shell and Neovim regression tests.
 - `make doctor` — checks of the installed environment, packages, and links.
 - `make check` — all three checks; doctor depends on the machine's state.

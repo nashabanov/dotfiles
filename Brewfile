@@ -18,7 +18,6 @@ brew "git"
 brew "gh"
 brew "bottom" # doctor: btm
 brew "lefthook"
-brew "luacheck"
 
 # Native build tools
 brew "make" # doctor: gmake

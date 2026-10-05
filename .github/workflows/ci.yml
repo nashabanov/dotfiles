@@ -21,6 +21,8 @@ jobs:
             python = "3.13"
             shellcheck = "latest"
             ruff = "latest"
+            stylua = "latest"
+            "github:Kampfkarren/selene" = "latest"
             ripgrep = "latest"
             fzf = "latest"
 

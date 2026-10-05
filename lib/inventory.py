@@ -15,7 +15,7 @@ def mise_config_paths(root: Path) -> list[Path]:
     """Return mise config files managed by this repository."""
     base = root / "mise"
     paths = [base / "config.toml"]
-    conf_d = base / "config.d"
+    conf_d = base / "conf.d"
 
     if conf_d.is_dir():
         paths.extend(

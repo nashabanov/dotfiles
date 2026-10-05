@@ -24,7 +24,8 @@ exec zsh
 
 The script prepares Homebrew and mise, then runs `make bootstrap` to install
 [Brewfile](Brewfile) packages, create configuration links (including the global
-mise configuration), and install tools from [mise/config.toml](mise/config.toml).
+mise configuration), and install tools from [mise/config.toml](mise/config.toml)
+and [mise/conf.d/nvim.toml](mise/conf.d/nvim.toml).
 If Homebrew and mise are already available in `PATH`, `make bootstrap` can also
 be run directly. The new Zsh session activates mise automatically.
 
@@ -39,15 +40,17 @@ initialize Docker integration.
 
 - [Brewfile](Brewfile): applications, system tools, Zsh plugins and fonts.
 - [mise/config.toml](mise/config.toml): Go 1.26, Node LTS, Python 3.13, Rust stable,
-  Tree-sitter, Codex, pre-commit, search tools, formatters, linters and LSPs.
+  Tree-sitter, Codex, pre-commit, search tools, formatters and linters.
   Project configurations can override runtime versions; Rust uses rustup.
+- [mise/conf.d/nvim.toml](mise/conf.d/nvim.toml): Neovim/editor LSP dependencies.
 
 | Command | Purpose |
 | --- | --- |
 | `make doctor` | Check commands, links, packages, Zsh integrations and shell syntax |
-| `make lint` | ShellCheck, Ruff and Zsh syntax checks |
+| `make lint` | ShellCheck, Ruff, StyLua, Selene and Zsh syntax checks |
 | `make test` | Shell and Neovim regression tests |
 | `make check` | Doctor, lint and tests |
+| `make zsh-completions` | Regenerate Zsh completions for managed tools |
 | `make tools-update` | Upgrade mise tools |
 | `make brew-update` | Update/upgrade Homebrew packages and offer Brewfile cleanup |
 | `make update` | Run both update targets |
