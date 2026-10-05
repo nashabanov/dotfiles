@@ -26,6 +26,13 @@ jobs:
             ripgrep = "latest"
             fzf = "latest"
 
+      - name: Ensure Selene is executable
+        run: |
+          # Selene release ZIPs can lose executable permissions (Kampfkarren/selene#653).
+          selene_dir="$(mise where github:Kampfkarren/selene)"
+          chmod u+x "$selene_dir/selene"
+          mise exec -- selene --version
+
       - name: Install Neovim and test plugin
         run: |
           export GO_CONTEXT_PATH="$RUNNER_TEMP/go-context.nvim"
