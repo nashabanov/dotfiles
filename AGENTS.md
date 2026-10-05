@@ -69,7 +69,7 @@ within the scope of the requested task.
 
 ## Manifests and installation
 
-- `bootstrap.sh` prepares Homebrew and mise, then invokes `make bootstrap`.
+- `scripts/bootstrap.sh` prepares Homebrew and mise, then invokes `make bootstrap`.
   Preserve the order: Brewfile → symlinks → mise tools.
 - `symlinks.conf` is the single link inventory for installation, doctor, and
   removal. Each row is `repository source|path relative to HOME|display name`.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Read-only diagnostics: no installs, network requests, or configuration startup.
 set -uo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=lib/common.sh
 source "$ROOT/lib/common.sh"
 passed=0

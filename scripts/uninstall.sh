@@ -3,7 +3,7 @@
 # against the real package managers. Preview is available without confirmation.
 set -eo pipefail
 # macOS Bash 3.2 treats empty arrays as unset under nounset.
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=lib/common.sh
 source "$ROOT/lib/common.sh"
 dry_run=0
@@ -13,7 +13,7 @@ purge_data=0
 failures=0
 usage() {
     cat <<'HELP'
-Usage: bash uninstall.sh [--dry-run] [--yes] [--links-only] [--purge-data]
+Usage: bash scripts/uninstall.sh [--dry-run] [--yes] [--links-only] [--purge-data]
   Default: managed links, all installed versions of mise tools declared here,
            installed Brewfile packages/apps/fonts, and application caches.
   --dry-run     Print the exact removal plan without changing anything.

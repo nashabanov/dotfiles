@@ -1,15 +1,19 @@
 SHELL := /bin/bash
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: bootstrap brew-install tools-install links \
-        update brew-update tools-update \
-        doctor lint test check uninstall \
+.PHONY: bootstrap bootstrap-fresh brew-install \
+		tools-install links update \
+        brew-update tools-update doctor \
+        lint test check uninstall \
 		zsh-completions
 
 bootstrap:
 	$(MAKE) brew-install
 	$(MAKE) links
 	$(MAKE) tools-install
+
+bootstrap-fresh:
+	bash "$(ROOT)scripts/bootstrap.sh"
 
 brew-install:
 	brew bundle --file="$(ROOT)Brewfile"
@@ -19,7 +23,7 @@ tools-install:
 	$(MAKE) zsh-completions
 
 links:
-	"$(ROOT)./symlinks.sh"
+	"$(ROOT)scripts/symlinks.sh"
 
 update: brew-update tools-update
 
@@ -33,10 +37,10 @@ tools-update:
 	$(MAKE) zsh-completions
 
 doctor:
-	@bash "$(ROOT)doctor.sh"
+	@bash "$(ROOT)scripts/doctor.sh"
 
 lint:
-	cd "$(ROOT)" && mise exec -- shellcheck *.sh lib/*.sh tests/*.sh
+	cd "$(ROOT)" && mise exec -- shellcheck scripts/*.sh lib/*.sh tests/*.sh
 	cd "$(ROOT)" && mise exec -- ruff check lib/
 	cd "$(ROOT)" && mise exec -- stylua --check nvim
 	cd "$(ROOT)" && mise exec -- selene nvim
@@ -55,4 +59,4 @@ check:
 	$(MAKE) test
 
 uninstall:
-	bash "$(ROOT)uninstall.sh" $(UNINSTALL_FLAGS)
+	bash "$(ROOT)scripts/uninstall.sh" $(UNINSTALL_FLAGS)

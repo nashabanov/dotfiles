@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/bin"
+mkdir -p "$fixture/bin" "$fixture/scripts"
 export BOOTSTRAP_FIXTURE="$fixture"
 
 # Simulate the installer without accessing the network or real Homebrew.
@@ -26,7 +26,7 @@ esac
 MOCK
 cat > "$fixture/bin/make" <<'MOCK'
 #!/bin/bash
-[[ "$1" == -C && "$3" == bootstrap ]]
+[[ "$1" == -C && "$2" == "$BOOTSTRAP_FIXTURE" && "$3" == bootstrap ]]
 command -v brew >/dev/null
 [[ -f "$BOOTSTRAP_FIXTURE/mise-installed" ]]
 touch "$BOOTSTRAP_FIXTURE/bootstrapped"
@@ -36,10 +36,10 @@ chmod +x "$fixture/bin/curl" "$fixture/bin/make"
 # Substitute standard prefixes in a copy so the test stays fully isolated.
 sed -e "s|/opt/homebrew|$fixture/arm|g" \
     -e "s|/usr/local|$fixture/intel|g" \
-    "$ROOT/bootstrap.sh" > "$fixture/bootstrap.sh"
+    "$ROOT/scripts/bootstrap.sh" > "$fixture/scripts/bootstrap.sh"
 for architecture in arm intel; do
     export BOOTSTRAP_PREFIX="$fixture/$architecture"
-    PATH="$fixture/bin:/usr/bin:/bin" /bin/bash "$fixture/bootstrap.sh" >/dev/null
+    PATH="$fixture/bin:/usr/bin:/bin" /bin/bash "$fixture/scripts/bootstrap.sh" >/dev/null
     [[ -f "$fixture/bootstrapped" ]]
     rm -rf "$BOOTSTRAP_PREFIX"
     rm "$fixture/bootstrapped" "$fixture/mise-installed"

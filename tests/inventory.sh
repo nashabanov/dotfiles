@@ -3,8 +3,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/repo/mise/conf.d" "$fixture/home"
-cp "$ROOT/Brewfile" "$ROOT/symlinks.conf" "$ROOT/symlinks.sh" "$ROOT/doctor.sh" "$ROOT/uninstall.sh" "$fixture/repo/"
+mkdir -p "$fixture/repo/mise/conf.d" "$fixture/repo/scripts" "$fixture/home"
+cp "$ROOT/Brewfile" "$ROOT/symlinks.conf" "$fixture/repo/"
+cp "$ROOT/scripts/symlinks.sh" "$ROOT/scripts/doctor.sh" "$ROOT/scripts/uninstall.sh" "$fixture/repo/scripts/"
 cp -R "$ROOT/lib" "$fixture/repo/"
 cp "$ROOT/mise/config.toml" "$fixture/repo/mise/"
 printf '[tools]\n"npm:editor-fixture" = "latest" # doctor: editor-fixture-server\n' > "$fixture/repo/mise/conf.d/nvim.toml"
@@ -33,12 +34,12 @@ while IFS='|' read -r source _target _name; do
     mkdir -p "$(dirname "$fixture/repo/$source")"
     printf 'fixture\n' > "$fixture/repo/$source"
 done < "$fixture/repo/symlinks.conf"
-HOME="$fixture/home" bash "$fixture/repo/symlinks.sh" >/dev/null
+HOME="$fixture/home" bash "$fixture/repo/scripts/symlinks.sh" >/dev/null
 [[ -L "$fixture/home/.extra" ]]
 [[ -L "$fixture/home/.config/git/config" && -L "$fixture/home/.config/git/ignore" ]]
-output="$(HOME="$fixture/home" bash "$fixture/repo/doctor.sh" 2>&1)" || :
+output="$(HOME="$fixture/home" bash "$fixture/repo/scripts/doctor.sh" 2>&1)" || :
 [[ "$output" == *"$fixture/home/.extra"* && "$output" == *fresh-cli* && "$output" == *actual-command* ]]
-HOME="$fixture/home" bash "$fixture/repo/uninstall.sh" --links-only --yes >/dev/null
+HOME="$fixture/home" bash "$fixture/repo/scripts/uninstall.sh" --links-only --yes >/dev/null
 [[ ! -L "$fixture/home/.extra" ]]
 printf '\n[tools.table-cli]\nversion = "latest"\n' >> "$fixture/repo/mise/config.toml"
 tools="$(inventory "$fixture/repo" mise-tools)"

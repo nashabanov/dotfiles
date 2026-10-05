@@ -3,10 +3,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 doctor_home="$(mktemp -d)"
 trap 'rm -rf "$doctor_home"' EXIT
-HOME="$doctor_home" bash "$ROOT/symlinks.sh" >/dev/null
+HOME="$doctor_home" bash "$ROOT/scripts/symlinks.sh" >/dev/null
 run_doctor() {
     local status=0
-    output="$(HOME="$doctor_home" bash "$ROOT/doctor.sh" 2>&1)" || status=$?
+    output="$(HOME="$doctor_home" bash "$ROOT/scripts/doctor.sh" 2>&1)" || status=$?
     # Other machine dependencies may be missing; assert individual diagnostics.
     [[ "$status" -le 1 ]]
 }

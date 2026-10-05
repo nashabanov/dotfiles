@@ -18,11 +18,12 @@ location because configuration links point into it.
 ```sh
 git clone https://github.com/nashabanov/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-bash bootstrap.sh
+make bootstrap-fresh
 exec zsh
 ```
 
-The script prepares Homebrew and mise, then runs `make bootstrap` to install
+`make bootstrap-fresh` runs [scripts/bootstrap.sh](scripts/bootstrap.sh), which
+prepares Homebrew and mise, then runs `make bootstrap` to install
 [Brewfile](Brewfile) packages, create configuration links (including the global
 mise configuration), and install tools from [mise/config.toml](mise/config.toml)
 and [mise/conf.d/nvim.toml](mise/conf.d/nvim.toml).
@@ -33,7 +34,7 @@ Open `nvim` once to install Lazy plugins; WezTerm downloads its
 tabline plugin when first loading the configuration. Launch OrbStack once to
 initialize Docker integration.
 
-`make links` (or `bash symlinks.sh`) creates only the links in
+`make links` (or `bash scripts/symlinks.sh`) creates only the links in
 [symlinks.conf](symlinks.conf).
 
 ## Tools and checks
@@ -46,6 +47,8 @@ initialize Docker integration.
 
 | Command | Purpose |
 | --- | --- |
+| `make bootstrap-fresh` | Prepare Homebrew and mise if missing, then run bootstrap |
+| `make bootstrap` | Install packages, links and tools with Homebrew and mise available |
 | `make doctor` | Check commands, links, packages, Zsh integrations and shell syntax |
 | `make lint` | ShellCheck, Ruff, StyLua, Selene and Zsh syntax checks |
 | `make test` | Shell and Neovim regression tests |
@@ -111,10 +114,10 @@ shims to avoid triggering installations while reading inventories.
 ## Uninstall
 
 ```sh
-bash uninstall.sh --dry-run     # Preview the removal plan
-bash uninstall.sh              # Apply after confirmation
-bash uninstall.sh --links-only # Remove only managed configuration links
-bash uninstall.sh --purge-data # Also delete application data
+bash scripts/uninstall.sh --dry-run     # Preview the removal plan
+bash scripts/uninstall.sh              # Apply after confirmation
+bash scripts/uninstall.sh --links-only # Remove only managed configuration links
+bash scripts/uninstall.sh --purge-data # Also delete application data
 ```
 
 Default cleanup removes all versions of mise tools declared here, installed
