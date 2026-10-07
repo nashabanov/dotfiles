@@ -8,7 +8,7 @@ return {
 			section_separators = { left = "", right = "" },
 			globalstatus = true,
 			disabled_filetypes = {
-				statusline = { "alpha", "neo-tree" },
+				statusline = { "snacks_dashboard", "snacks_picker_list" },
 			},
 		},
 		sections = {

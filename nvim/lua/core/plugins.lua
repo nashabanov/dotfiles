@@ -12,7 +12,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	require("plugins.neotree"),
 	require("plugins.treesitter"),
 	require("plugins.treesitter-modules"),
 	require("plugins.lazydev"),
@@ -20,19 +19,15 @@ require("lazy").setup({
 	require("plugins.lint"),
 	require("plugins.cmp"),
 	require("plugins.autopairs"),
-	require("plugins.telescope"),
+	require("plugins.snacks"),
 	require("plugins.theme"),
-	require("plugins.alpha"),
 	require("plugins.lualine"),
 	require("plugins.todo-comments"),
 	require("plugins.which-key"),
 	require("plugins.comment"),
-	require("plugins.notify"),
 	require("plugins.nui"),
 	require("plugins.noice"),
-	require("plugins.indent-blankline"),
 	require("plugins.gitsigns"),
 	require("plugins.cursorword"),
 	require("plugins.fff"),
-	require("plugins.cinnamon"),
 })

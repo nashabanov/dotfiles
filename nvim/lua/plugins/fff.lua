@@ -4,6 +4,24 @@ return {
 		require("fff.download").download_or_build_binary()
 	end,
 	opts = {
+		prompt = "  ",
+		layout = {
+			width = 0.8,
+			height = 0.8,
+			prompt_position = "top",
+			preview_position = "right",
+			preview_size = 0.5,
+			border = "rounded",
+		},
+		-- Use the same theme groups as Snacks, even before its first picker opens.
+		hl = {
+			normal = "NormalFloat",
+			border = "FloatBorder",
+			title = "FloatTitle",
+			prompt = "UiAccent",
+			matched = "UiAccent",
+			cursor = "CursorLine",
+		},
 		debug = {
 			enabled = false,
 			show_scores = false,

@@ -3,7 +3,7 @@ return {
 	event = "VeryLazy",
 	dependencies = {
 		"MunifTanjim/nui.nvim",
-		"rcarriga/nvim-notify",
+		"folke/snacks.nvim",
 	},
 	opts = {
 		lsp = {
@@ -19,6 +19,7 @@ return {
 			long_message_to_split = true,
 		},
 		views = {
+			notify = { backend = "snacks" },
 			cmdline_popup = {
 				position = { row = "50%", col = "50%" },
 				size = { width = 60, height = "auto" },
