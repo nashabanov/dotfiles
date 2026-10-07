@@ -15,6 +15,7 @@ ripgrep = "latest" # doctor: rg
 fd = "latest"
 fzf = "latest"
 bat = "latest"
+zoxide = "latest"
 
 "github:Kampfkarren/selene" = "latest" # doctor: selene
 stylua = "latest"
