@@ -1,0 +1,45 @@
+name: Fresh-install smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 5 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      NONINTERACTIVE: '1'
+      MISE_YES: '1'
+      MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Skip desktop dependencies
+        run: |
+          # Keep the existing Brewfile as the only package inventory.
+          casks=$(brew bundle list --cask --file=Brewfile | paste -sd ' ' -)
+          echo "HOMEBREW_BUNDLE_CASK_SKIP=$casks" >> "$GITHUB_ENV"
+
+      - name: Fresh bootstrap
+        run: make bootstrap-fresh
+
+      - name: Check installed state
+        run: mise exec -- make doctor
+
+      - name: Start login and interactive Zsh
+        run: zsh -lic 'exit'
+
+      - name: Install locked Neovim plugins
+        run: mise exec -- nvim --headless '+Lazy! restore' '+qa'
+
+      - name: Start Neovim with installed configuration
+        # Neovim can print configuration errors yet exit zero with :qa.
+        run: mise exec -- nvim --headless '+lua if vim.v.errmsg ~= "" then vim.cmd("cquit") end' '+qa'

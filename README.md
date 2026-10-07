@@ -65,6 +65,12 @@ Use `:checkhealth` for Neovim runtime diagnostics.
 
 [CI](.github/workflows/ci.yml) runs `make lint test` on macOS for pushes and pull
 requests, using the `go-context.nvim` revision from `nvim/lazy-lock.json`.
+[Fresh-install smoke](.github/workflows/smoke.yml) runs weekly and manually on
+macOS: `make bootstrap-fresh`, doctor, login/interactive Zsh and real headless
+Neovim startup, waiting for Lazy to restore locked plugins first. It uses
+Homebrew's `HOMEBREW_BUNDLE_CASK_SKIP` with casks read from Brewfile to omit
+desktop apps and fonts; doctor respects the same exclusions. Normal bootstrap
+still installs the full Brewfile when this variable is unset.
 
 Homebrew cleanup can propose removing packages outside Brewfile and return a
 nonzero status if cleanup is declined, stopping `make update`. Review its list;

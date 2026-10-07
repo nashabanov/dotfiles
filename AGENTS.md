@@ -97,6 +97,12 @@ Use Makefile targets from the repository root:
 - `make doctor` — checks of the installed environment, packages, and links.
 - `make check` — all three checks; doctor depends on the machine's state.
 
+`.github/workflows/ci.yml` owns fast lint/tests on pushes and pull requests.
+`.github/workflows/smoke.yml` owns weekly/manual fresh-install integration on
+macOS: bootstrap, doctor and real shell/editor startup. Smoke excludes Brewfile
+casks via `HOMEBREW_BUNDLE_CASK_SKIP`; inventory/doctor honor those exclusions.
+Do not duplicate lint/tests or desktop provisioning in smoke.
+
 Run relevant tests for script, inventory, or Neovim changes. Before completing
 substantial changes, run `make lint test`, as CI does. Neovim tests require an
 installed `go-context.nvim` or `GO_CONTEXT_PATH` pointing to the revision from

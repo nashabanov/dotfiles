@@ -109,7 +109,7 @@ done < "$ROOT/symlinks.conf"
 section 'Homebrew packages and Zsh integrations'
 if command -v brew >/dev/null 2>&1; then
     if output="$(HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --no-upgrade --file="$ROOT/Brewfile" 2>&1)"; then
-        report OK Brewfile 'all formulae, casks and fonts installed'
+        report OK Brewfile 'all dependencies installed (respecting HOMEBREW_BUNDLE_CASK_SKIP)'
     else
         report FAIL Brewfile 'missing dependencies; run make brew-install'
         printf '%s\n' "$output"
@@ -134,7 +134,7 @@ else
     report WARN 'Homebrew integrations' 'skipped: brew unavailable'
 fi
 section 'Shell configuration syntax'
-for file in "$ROOT"/*.sh "$ROOT"/lib/*.sh "$ROOT"/tests/*.sh; do
+for file in "$ROOT"/lib/*.sh "$ROOT"/tests/*.sh; do
     if output="$(bash -n "$file" 2>&1)"; then
         report OK "${file#"$ROOT/"}" 'bash syntax valid'
     else

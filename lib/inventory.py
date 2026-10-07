@@ -1,6 +1,7 @@
 """Read package inventories without activating configs or installing tools."""
 
 import argparse
+import os
 import re
 import sys
 import tomllib
@@ -79,6 +80,7 @@ def brew_inventory(root: Path, mode: str) -> list[str]:
     """Read the Brewfile's package declarations and doctor annotations."""
     entries: list[str] = []
     text = (root / "Brewfile").read_text(encoding="utf-8")
+    skipped_casks = set(os.environ.get("HOMEBREW_BUNDLE_CASK_SKIP", "").split())
     for line in text.splitlines():
         declaration = BREW_DECLARATION.match(line)
 
@@ -86,6 +88,8 @@ def brew_inventory(root: Path, mode: str) -> list[str]:
             continue
 
         kind, package, suffix = declaration.groups()
+        if kind == "cask" and package in skipped_casks:
+            continue
         files = re.search(r"# doctor-file:\s*(.+)", suffix)
         commands = re.search(r"# doctor:\s*(.+)", suffix)
         apps = re.search(r"# doctor-app:\s*(.+)", suffix)

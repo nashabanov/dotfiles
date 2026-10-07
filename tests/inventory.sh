@@ -26,6 +26,15 @@ commands="$(inventory "$fixture/repo" brew-binaries)"
 [[ $'\n'"$commands"$'\n' != *$'\n'uv$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'fresh-brew$'\n'* ]]
 [[ $'\n'"$commands"$'\n' == *$'\n'actual-command$'\n'* ]]
+# Homebrew's cask exclusions must also apply to doctor annotations.
+[[ $'\n'"$commands"$'\n' == *$'\n'docker$'\n'* ]]
+apps="$(inventory "$fixture/repo" brew-apps)"
+[[ "$apps" == *WezTerm.app* ]]
+commands="$(HOMEBREW_BUNDLE_CASK_SKIP='orbstack wezterm' inventory "$fixture/repo" brew-binaries)"
+[[ $'\n'"$commands"$'\n' != *$'\n'docker$'\n'* ]]
+[[ $'\n'"$commands"$'\n' == *$'\n'fresh-brew$'\n'* ]]
+apps="$(HOMEBREW_BUNDLE_CASK_SKIP='orbstack wezterm' inventory "$fixture/repo" brew-apps)"
+[[ -z "$apps" ]]
 # A new link needs only one manifest edit for install, doctor and uninstall.
 printf 'extra|.extra|Extra\n' >> "$fixture/repo/symlinks.conf"
 while IFS='|' read -r source _target _name; do
