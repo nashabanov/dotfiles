@@ -29,7 +29,7 @@ version selection, updates, and removal. First inspect `Brewfile`,
 - Add new runtimes, developer CLIs, LSP servers, formatters, and linters to mise
   by default. Add applications, fonts, Zsh plugins, and system utilities to
   Brewfile. Explain any exception in the change description.
-- A mise backend (`npm:`, `pypi:`, `go:`, `github:`, etc.) is an installation
+- A mise backend (`npm:`, `pipx:`, `go:`, `github:`, etc.) is an installation
   mechanism within mise, not a separate owner. For example, update
   `npm:@openai/codex` through mise, not through `npm install -g`.
 - Do not install mise-managed commands in parallel through Homebrew,

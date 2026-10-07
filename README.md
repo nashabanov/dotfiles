@@ -43,6 +43,9 @@ initialize Docker integration.
 - [mise/config.toml](mise/config.toml): Go 1.26, Node LTS, Python 3.13, Rust stable,
   Tree-sitter, Codex, pre-commit, search tools, formatters and linters.
   Project configurations can override runtime versions; Rust uses rustup.
+  Pre-commit uses mise's `pipx:` backend with managed uv; no separate pipx
+  installation is needed. This backend also works with mise versions that
+  do not yet support the newer `pypi:` name.
 - [mise/conf.d/nvim.toml](mise/conf.d/nvim.toml): Neovim/editor LSP dependencies.
 
 | Command | Purpose |

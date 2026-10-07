@@ -9,7 +9,7 @@ rust = { version = "stable", profile = "default" } # doctor: rustc cargo rustfmt
 uv = "latest"                  # doctor: uv uvx
 tree-sitter = "0.26.5"
 "npm:@openai/codex" = "latest" # doctor: codex
-"pypi:pre-commit" = "latest"   # doctor: pre-commit
+"pipx:pre-commit" = "latest"   # doctor: pre-commit
 
 ripgrep = "latest" # doctor: rg
 fd = "latest"
