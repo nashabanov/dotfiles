@@ -1,7 +1,8 @@
 # Dotfiles
 
-Personal macOS environment: Zsh, WezTerm, Starship, Neovim and gitui.
-WezTerm uses Geist Mono with Symbols Nerd Font Mono; both fonts are in Brewfile.
+Personal macOS environment: Zsh, WezTerm, Ghostty, Starship, Neovim and gitui.
+WezTerm and Ghostty use Geist Mono with Symbols Nerd Font Mono; both fonts are
+in Brewfile.
 
 ## Install
 

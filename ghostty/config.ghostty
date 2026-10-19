@@ -1,0 +1,27 @@
+theme = GitHub Dark
+
+font-family = Geist Mono
+font-family = Symbols Nerd Font Mono
+font-style = Regular
+font-size = 13.5
+adjust-cell-height = 25%
+
+background-opacity = 0.90
+background-opacity-cells = false
+background-blur = macos-glass-regular
+
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = false
+window-width = 120
+window-height = 50
+window-theme = dark
+window-title-font-family = Geist Mono
+window-new-tab-position = current
+
+cursor-style = bar
+cursor-style-blink = true
+
+macos-titlebar-style = transparent
+
+confirm-close-surface = false

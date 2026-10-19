@@ -27,6 +27,9 @@ brew "opencode"
 
 # Applications
 cask "wezterm" # doctor-app: WezTerm.app/Contents/MacOS/wezterm
+cask "ghostty" # doctor-app: Ghostty.app/Contents/MacOS/ghostty
 cask "orbstack" # doctor: docker
+
+# Fonts
 cask "font-geist-mono"
 cask "font-symbols-only-nerd-font"
