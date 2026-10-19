@@ -114,4 +114,5 @@ Preserve shell-script compatibility with the macOS Bash version in use and
 existing path validation and removal confirmations. Do not change plugin
 lockfiles or pinned revisions unnecessarily; Tree-sitter is pinned for Neovim
 0.11 compatibility. Do not commit logs, caches, secrets, or machine-specific
-paths. Update README alongside configuration when user-facing behavior changes.
+paths. Update README only when explicitly requested by the user; do not update
+it automatically for code or configuration changes.

@@ -3,7 +3,7 @@ command_timeout = 500
 add_newline = true
 
 format = """
-$directory$git_branch$git_status $golang $python $lua $cmd_duration
+$directory$git_branch$git_status$golang$python$lua$cmd_duration
 $character"""
 
 [directory]
@@ -18,7 +18,7 @@ style = "fg:#539bf5"
 format = "[$symbol$branch]($style) "
 
 [git_status]
-format = "([$all_status$ahead_behind]($style))"
+format = "([$all_status$ahead_behind]($style) )"
 style = "fg:#c69026"
 
 ahead = "[⇡${count}](fg:#539bf5)"

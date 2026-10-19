@@ -3,6 +3,7 @@
 Personal macOS environment: Zsh, WezTerm, Ghostty, Starship, Neovim and gitui.
 WezTerm and Ghostty use Geist Mono with Symbols Nerd Font Mono; both fonts are
 in Brewfile.
+Starship modules use a single separating space; hidden modules add no spacing.
 
 ## Install
 
