@@ -4,6 +4,10 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=lib/common.sh
 source "$ROOT/lib/common.sh"
+# shellcheck source=lib/terminal.sh
+source "$ROOT/lib/terminal.sh"
+terminal_load || exit $?
+terminal_skip_casks
 passed=0
 failed=0
 warnings=0
@@ -88,6 +92,7 @@ fi
 section 'Managed symlinks'
 while IFS='|' read -r source target _name; do
     [[ -z "$source" || "$source" == \#* ]] && continue
+    terminal_link_enabled "$source" || continue
     source="$ROOT/$source"
     target="$HOME/$target"
     if [[ ! -e "$source" ]]; then

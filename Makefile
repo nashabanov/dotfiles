@@ -8,15 +8,13 @@ ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 		zsh-completions
 
 bootstrap:
-	$(MAKE) brew-install
-	$(MAKE) links
-	$(MAKE) tools-install
+	bash "$(ROOT)scripts/install.sh" $(BOOTSTRAP_FLAGS)
 
 bootstrap-fresh:
-	bash "$(ROOT)scripts/bootstrap.sh"
+	bash "$(ROOT)scripts/bootstrap.sh" $(BOOTSTRAP_FLAGS)
 
 brew-install:
-	brew bundle --file="$(ROOT)Brewfile"
+	bash "$(ROOT)scripts/brew.sh"
 
 tools-install:
 	cd "$(ROOT)" && mise install
@@ -47,8 +45,8 @@ lint:
 	@for file in "$(ROOT)zsh/.zshrc" "$(ROOT)"zsh/*.zsh; do zsh -n "$$file" || exit; done
 
 test:
-	@cd "$(ROOT)" && for file in tests/*.sh; do bash "$$file" || exit; done
-	@cd "$(ROOT)" && for file in nvim/tests/*.lua; do mise exec -- nvim --headless -u NONE -i NONE -l "$$file" || exit; done
+	@cd "$(ROOT)" && for file in tests/*.sh; do printf 'RUN: %s\n' "$$file"; bash "$$file" || exit; done
+	@cd "$(ROOT)" && for file in nvim/tests/*.lua; do printf 'RUN: %s\n' "$$file"; mise exec -- nvim --headless -u NONE -i NONE -l "$$file" || exit; done
 
 zsh-completions:
 	cd "$(ROOT)" && mise run zsh-completions-sync

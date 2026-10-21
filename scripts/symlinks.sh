@@ -9,6 +9,9 @@ GRAY='\033[0;90m'
 NC='\033[0m'
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=lib/terminal.sh
+source "$DOTFILES_DIR/lib/terminal.sh"
+terminal_load
 success_count=0
 fail_count=0
 
@@ -78,6 +81,7 @@ print_header
 # Keep stdin available for replacement confirmations.
 while IFS='|' read -r source target name <&3; do
     [[ -z "$source" || "$source" == \#* ]] && continue
+    terminal_link_enabled "$source" || continue
     create_symlink "$DOTFILES_DIR/$source" "$HOME/$target" "$name" || :
 done 3< "$DOTFILES_DIR/symlinks.conf"
 

@@ -4,7 +4,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/bin" "$fixture/scripts"
+mkdir -p "$fixture/bin" "$fixture/scripts" "$fixture/home"
+cp -R "$ROOT/lib" "$fixture/"
+export HOME="$fixture/home"
+unset DOTFILES_TERMINAL
+unset XDG_STATE_HOME
 export BOOTSTRAP_FIXTURE="$fixture"
 
 # Simulate the installer without accessing the network or real Homebrew.
@@ -39,7 +43,7 @@ sed -e "s|/opt/homebrew|$fixture/arm|g" \
     "$ROOT/scripts/bootstrap.sh" > "$fixture/scripts/bootstrap.sh"
 for architecture in arm intel; do
     export BOOTSTRAP_PREFIX="$fixture/$architecture"
-    PATH="$fixture/bin:/usr/bin:/bin" /bin/bash "$fixture/scripts/bootstrap.sh" >/dev/null
+    PATH="$fixture/bin:/usr/bin:/bin" /bin/bash "$fixture/scripts/bootstrap.sh" </dev/null >/dev/null
     [[ -f "$fixture/bootstrapped" ]]
     rm -rf "$BOOTSTRAP_PREFIX"
     rm "$fixture/bootstrapped" "$fixture/mise-installed"
