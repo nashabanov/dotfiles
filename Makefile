@@ -31,8 +31,7 @@ brew-update:
 	brew bundle cleanup --file="$(ROOT)Brewfile"
 
 tools-update:
-	cd "$(ROOT)" && mise upgrade
-	$(MAKE) zsh-completions
+	cd "$(ROOT)" && mise run tools:update
 
 doctor:
 	@bash "$(ROOT)scripts/doctor.sh"

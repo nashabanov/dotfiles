@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Upgrade mise-managed tools and regenerate Zsh completions"
+
+set -euo pipefail
+
+TASK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+ROOT="$(cd "$TASK_DIR/../../.." && pwd)"
+
+mise -C "$ROOT" upgrade
+mise -C "$ROOT" run zsh-completions-sync
