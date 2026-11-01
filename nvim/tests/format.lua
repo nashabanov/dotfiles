@@ -71,12 +71,28 @@ local function run()
 		assert(vim.fn.readfile(temp_dir .. "/first.txt")[1] == expected)
 	end
 
-	for filetype, name in pairs({ python = "ruff", lua = "lua_ls", go = "gopls", rust = "rust_analyzer" }) do
+	for filetype, name in pairs({
+		python = "ruff",
+		lua = "lua_ls",
+		go = "gopls",
+		rust = "rust_analyzer",
+		ruby = "ruby_lsp",
+	}) do
 		reset(filetype)
 		clients = { client("aaa_other", 2, first), client(name, 3, first), client(name, 1, first) }
 		save("formatted")
 		assert(vim.deep_equal(calls, { 1 }), "Preferred formatter must be the only request")
 	end
+
+	reset("eruby")
+	clients = { client("herb_ls", 1, first) }
+	save("raw")
+	clients[#clients + 1] = client("ruby_lsp", 2, first)
+	save("raw")
+	assert(#calls == 0, "ERB must not format by default, even with one available formatter")
+	vim.b[first].lsp_formatter = "herb_ls"
+	save("formatted")
+	assert(vim.deep_equal(calls, { 1 }), "ERB formatting requires an explicit buffer choice")
 
 	reset("javascript")
 	clients = { client("z_server", 1, first), client("a_server", 2, first) }

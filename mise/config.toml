@@ -1,8 +1,12 @@
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]
+
 [tools]
 # Default runtimes; projects can override these versions.
 go = "1.26"                                        # doctor: go gofmt
 node = "lts"                                       # doctor: node npm
 python = "3.13"                                    # doctor: python3.13
+ruby = "3.4"                                       # doctor: ruby gem bundle
 rust = { version = "stable", profile = "default" } # doctor: rustc cargo rustfmt cargo-clippy
 
 # Developer CLIs: avoid global npm/uv installations.

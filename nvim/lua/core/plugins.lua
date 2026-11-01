@@ -16,6 +16,7 @@ require("lazy").setup({
 	require("plugins.treesitter-modules"),
 	require("plugins.lazydev"),
 	require("plugins.lsp"),
+	require("plugins.rails"),
 	require("plugins.lint"),
 	require("plugins.cmp"),
 	require("plugins.autopairs"),

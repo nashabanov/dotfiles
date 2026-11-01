@@ -125,10 +125,15 @@ local ok, err = xpcall(function()
 	local treesitter = load_plugin("treesitter")
 	treesitter.config()
 	assert(registered.jsonc == "json5")
+	assert(vim.filetype.match({ filename = "app/views/posts/index.html.erb" }) == "eruby")
+	assert(load_plugin("rails")[1] == "tpope/vim-rails" and load_plugin("rails").lazy == false)
 	local modules = load_plugin("treesitter-modules")
 	assert(modules.opts.highlight.enable and modules.opts.incremental_selection.keymaps.node_incremental == "<Enter>")
 	assert(vim.tbl_contains(modules.opts.ensure_installed, "gowork"))
 	assert(vim.tbl_contains(modules.opts.ensure_installed, "markdown_inline"))
+	for _, parser in ipairs({ "ruby", "embedded_template", "html", "css", "javascript", "typescript", "tsx" }) do
+		assert(vim.tbl_contains(modules.opts.ensure_installed, parser), "Missing parser: " .. parser)
+	end
 end, debug.traceback)
 
 vim.keymap.set = original_keymap_set

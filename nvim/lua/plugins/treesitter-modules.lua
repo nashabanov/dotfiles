@@ -13,6 +13,8 @@ return {
 			"gowork",
 			"lua",
 			"rust",
+			"ruby",
+			"embedded_template",
 			"javascript",
 			"typescript",
 			"tsx",

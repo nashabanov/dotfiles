@@ -5,6 +5,7 @@ local preferred = {
 	lua = "lua_ls",
 	go = "gopls",
 	rust = "rust_analyzer",
+	ruby = "ruby_lsp",
 }
 
 local function select_client(bufnr)
@@ -13,6 +14,10 @@ local function select_client(bufnr)
 		method = "textDocument/formatting",
 	})
 	local name = vim.b[bufnr].lsp_formatter or preferred[vim.bo[bufnr].filetype]
+	-- ERB formatting remains opt-in, including when a server advertises it.
+	if vim.bo[bufnr].filetype == "eruby" and not name then
+		return
+	end
 
 	-- Keep the choice independent of the order in which servers attach.
 	table.sort(clients, function(a, b)
