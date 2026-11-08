@@ -1,10 +1,5 @@
-# Editor
-brew "neovim" # doctor: nvim
-brew "gitui"
-
 # Shell/UI
 brew "starship"
-brew "eza"
 
 # Zsh
 brew "fzf-tab" # doctor-file: share/fzf-tab/fzf-tab.zsh
@@ -15,15 +10,9 @@ brew "zsh-syntax-highlighting" # doctor-file: share/zsh-syntax-highlighting/zsh-
 # Infrastructure
 brew "mise"
 brew "git"
-brew "gh"
-brew "bottom" # doctor: btm
-brew "lefthook"
 
 # Native build tools
 brew "make" # doctor: gmake
-
-# External tools
-brew "opencode"
 
 # Applications
 cask "wezterm" # doctor-app: WezTerm.app/Contents/MacOS/wezterm

@@ -21,9 +21,9 @@ version selection, updates, and removal. First inspect `Brewfile`,
 
 ### Selection and boundaries
 
-- Preserve the existing owner. For example, `neovim`, `gitui`, `starship`,
-  `eza`, `gh`, `lefthook`, and `opencode` belong to Homebrew;
-  `ripgrep`, `fd`, `fzf`, `bat`, `uv`, `ruff`, `stylua`, `shellcheck`,
+- Preserve the existing owner. `starship`, `git`, `make`, and mise itself
+  belong to Homebrew. Neovim, `gitui`, `eza`, `gh`, `lefthook`, `opencode`,
+  `bottom`, `ripgrep`, `fd`, `fzf`, `bat`, `uv`, `ruff`, `stylua`, `shellcheck`,
   `golangci-lint`, Codex, and pre-commit belong to mise. Consult the manifests
   for the current inventory.
 - Add new runtimes, developer CLIs, LSP servers, formatters, and linters to mise
@@ -112,7 +112,8 @@ or unavailable checks.
 
 Preserve shell-script compatibility with the macOS Bash version in use and
 existing path validation and removal confirmations. Do not change plugin
-lockfiles or pinned revisions unnecessarily; Tree-sitter is pinned for Neovim
-0.11 compatibility. Do not commit logs, caches, secrets, or machine-specific
+lockfiles or pinned revisions unnecessarily; preserve the Tree-sitter pin when
+changing Neovim ownership or versions, and validate editor compatibility.
+Do not commit logs, caches, secrets, or machine-specific
 paths. Update README only when explicitly requested by the user; do not update
 it automatically for code or configuration changes.

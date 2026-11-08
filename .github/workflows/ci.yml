@@ -33,11 +33,12 @@ jobs:
           chmod u+x "$selene_dir/selene"
           mise exec -- selene --version
 
-      - name: Install Neovim and test plugin
+      - name: Install managed Neovim and test plugin
         run: |
           export GO_CONTEXT_PATH="$RUNNER_TEMP/go-context.nvim"
           echo "GO_CONTEXT_PATH=$GO_CONTEXT_PATH" >> "$GITHUB_ENV"
-          brew install neovim
+          neovim_version=$(python -c 'import tomllib; print(tomllib.load(open("mise/config.toml", "rb"))["tools"]["aqua:neovim/neovim"])')
+          mise use "aqua:neovim/neovim@$neovim_version"
           revision=$(python -c 'import json; print(json.load(open("nvim/lazy-lock.json"))["go-context.nvim"]["commit"])')
           git init "$GO_CONTEXT_PATH"
           git -C "$GO_CONTEXT_PATH" remote add origin https://github.com/nashabanov/go-context.nvim.git
