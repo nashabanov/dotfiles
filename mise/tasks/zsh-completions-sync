@@ -3,11 +3,13 @@
 
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+TASK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+ROOT="$(cd "$TASK_DIR/../.." && pwd)"
 OUT="$ROOT/zsh/completions"
 
 mkdir -p "$OUT"
 
+mise completion zsh > "$OUT/_mise"
 bat --completion zsh > "$OUT/_bat"
 fd --gen-completions zsh > "$OUT/_fd"
 rg --generate complete-zsh > "$OUT/_rg"

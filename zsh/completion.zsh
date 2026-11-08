@@ -1,7 +1,3 @@
-if [[ -d "$DOTFILES_ZSH_DIR/completions" ]]; then
-  fpath=("$DOTFILES_ZSH_DIR/completions" $fpath)
-fi
-
 if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
   if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
     fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
@@ -11,10 +7,19 @@ if [[ -n ${HOMEBREW_PREFIX:-} ]]; then
     fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
   fi
 fi
+if [[ -d "$DOTFILES_ZSH_DIR/completions" ]]; then
+  fpath=("$DOTFILES_ZSH_DIR/completions" $fpath)
+fi
 typeset -U fpath
 
 autoload -Uz compinit
 compinit -C
+
+# Register generated mise completion even when compinit reuses an older dump.
+if [[ -f "$DOTFILES_ZSH_DIR/completions/_mise" ]]; then
+  autoload -Uz _mise
+  compdef _mise mise
+fi
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
