@@ -15,11 +15,14 @@ typeset -U fpath
 autoload -Uz compinit
 compinit -C
 
-# Register generated mise completion even when compinit reuses an older dump.
-if [[ -f "$DOTFILES_ZSH_DIR/completions/_mise" ]]; then
-  autoload -Uz _mise
-  compdef _mise mise
-fi
+# Register generated completions even when compinit reuses an older dump.
+for completion_command in mise bat fd rg uv uvx eza gh ruff golangci-lint; do
+  if [[ -f "$DOTFILES_ZSH_DIR/completions/_$completion_command" ]]; then
+    autoload -Uz "_$completion_command"
+    compdef "_$completion_command" "$completion_command"
+  fi
+done
+unset completion_command
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'

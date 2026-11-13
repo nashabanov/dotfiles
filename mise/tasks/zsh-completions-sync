@@ -13,3 +13,21 @@ mise completion zsh > "$OUT/_mise"
 bat --completion zsh > "$OUT/_bat"
 fd --gen-completions zsh > "$OUT/_fd"
 rg --generate complete-zsh > "$OUT/_rg"
+uv generate-shell-completion zsh > "$OUT/_uv"
+uvx --generate-shell-completion zsh > "$OUT/_uvx"
+gh completion -s zsh > "$OUT/_gh"
+ruff generate-shell-completion zsh > "$OUT/_ruff"
+golangci-lint completion zsh > "$OUT/_golangci-lint"
+
+# eza distributes completions in its source tree, not in the installed binary.
+EZA_VERSION="$(eza --version | sed -nE 's/^v([0-9]+\.[0-9]+\.[0-9]+).*$/\1/p')"
+if [[ -z "$EZA_VERSION" ]]; then
+  echo 'Cannot determine the installed eza version' >&2
+  exit 1
+fi
+EZA_COMPLETION="$(mktemp "$OUT/.eza.XXXXXX")"
+trap 'rm -f "$EZA_COMPLETION"' EXIT
+curl --fail --silent --show-error --location \
+  "https://raw.githubusercontent.com/eza-community/eza/v${EZA_VERSION}/completions/zsh/_eza" \
+  --output "$EZA_COMPLETION"
+mv "$EZA_COMPLETION" "$OUT/_eza"
